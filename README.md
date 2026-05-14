@@ -4,6 +4,10 @@
 
 AgroSense is an AI-powered crop recommendation system that helps farmers and users identify the most suitable crop based on soil nutrients and environmental conditions using Machine Learning techniques.
 
+## 🚀 Live Demo
+
+https://crop-recommendation-system-new.onrender.com/
+
 ## 🚀 Features
 
 * Crop recommendation using Machine Learning
@@ -42,7 +46,7 @@ AgroSense is an AI-powered crop recommendation system that helps farmers and use
 
 ## 📂 Project Structure
 
-```bash id="a0q7md"
+```bash id="ixpw4f"
 agrosense-clean/
 │── models/
 │── static/css/
@@ -56,7 +60,7 @@ agrosense-clean/
 
 ## ⚡ Installation
 
-```bash id="e7w2pk"
+```bash id="ml8qvs"
 git clone https://github.com/Nithin10180/Ai-Based-Crop-Recommendation-System.git
 cd Ai-Based-Crop-Recommendation-System
 pip install -r requirements.txt
