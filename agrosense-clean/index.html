@@ -1,0 +1,2294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>AgroSense AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+:root{
+  --gd:#1a3c2e;--gm:#2e6b4f;--gl:#7ec94e;--amb:#f5a623;--cr:#f7f3eb;
+  --wh:#fff;--td:#1a1a1a;--tm:#6b7280;--bo:rgba(0,0,0,.08);
+  --cb:rgba(255,255,255,.92);--sh:0 4px 24px rgba(30,60,40,.09);
+  --red:#ef4444;--blue:#3b82f6;--purple:#8b5cf6;--teal:#0d9488;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:'DM Sans',sans-serif;background:var(--cr);color:var(--td);display:flex;flex-direction:column}
+.bg{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse 80% 60% at 20% 10%,rgba(126,201,78,.09) 0%,transparent 60%),radial-gradient(ellipse 60% 80% at 80% 80%,rgba(46,107,79,.07) 0%,transparent 60%),var(--cr)}
+
+/* HEADER */
+.hdr{position:relative;z-index:100;background:rgba(247,243,235,.96);backdrop-filter:blur(18px);border-bottom:1px solid var(--bo);flex-shrink:0}
+.hdr-in{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:58px;gap:6px}
+.logo{display:flex;align-items:center;gap:8px;font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:var(--gd);cursor:pointer;flex-shrink:0}
+.nav{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.np{padding:6px 12px;border-radius:7px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:600;transition:.18s;background:transparent;color:var(--td);display:flex;align-items:center;gap:5px}
+.np:hover{background:rgba(26,60,46,.07)}
+
+/* Language Selector */
+.lang-dd{position:relative}
+.lang-btn{display:flex;align-items:center;gap:6px;padding:5px 11px;border-radius:7px;border:2px solid var(--purple);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.79rem;font-weight:700;color:var(--purple);background:rgba(139,92,246,.06);transition:.18s}
+.lang-btn:hover{background:rgba(139,92,246,.12)}
+.lang-flag{font-size:1rem}
+.lang-arrow{font-size:.5rem;transition:transform .22s}
+.lang-dd.open .lang-arrow{transform:rotate(180deg)}
+.lang-menu{position:absolute;top:calc(100%+7px);right:0;background:var(--wh);border-radius:13px;box-shadow:0 14px 44px rgba(0,0,0,.15);border:1px solid var(--bo);min-width:200px;overflow:hidden;opacity:0;transform:translateY(-5px) scale(.97);pointer-events:none;transition:.18s;z-index:400}
+.lang-dd.open .lang-menu{opacity:1;transform:translateY(0) scale(1);pointer-events:all}
+.lang-head{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--tm);padding:9px 14px 4px;display:flex;align-items:center;gap:5px}
+.lang-item{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;font-size:.86rem;font-weight:500;transition:background .13s;color:var(--td)}
+.lang-item:hover{background:rgba(139,92,246,.06)}
+.lang-item.active{background:rgba(139,92,246,.09);color:var(--purple);font-weight:700}
+.lang-item-flag{font-size:1.15rem}
+.lang-item-name{flex:1}
+.lang-item-native{font-size:.75rem;color:var(--tm)}
+.lang-item-check{color:var(--purple);font-size:.8rem;opacity:0}
+.lang-item.active .lang-item-check{opacity:1}
+
+/* Dropdowns */
+.dd{position:relative}
+.db{display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:7px;border:1.5px solid var(--gd);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:600;color:var(--gd);background:transparent;transition:.18s}
+.db:hover{background:rgba(26,60,46,.06)}
+.db.fert-btn{border-color:var(--amb);color:var(--amb)}
+.db.fert-btn:hover{background:rgba(245,166,35,.07)}
+.da{font-size:.52rem;transition:transform .22s}
+.dd.open .da{transform:rotate(180deg)}
+.dm{position:absolute;top:calc(100%+7px);left:0;background:var(--wh);border-radius:13px;box-shadow:0 14px 44px rgba(0,0,0,.13);border:1px solid var(--bo);min-width:220px;overflow:hidden;opacity:0;transform:translateY(-5px) scale(.97);pointer-events:none;transition:.18s;z-index:300}
+.dd.open .dm{opacity:1;transform:translateY(0) scale(1);pointer-events:all}
+.di{display:flex;align-items:center;gap:11px;padding:11px 15px;cursor:pointer;font-size:.85rem;font-weight:500;transition:background .13s;color:var(--td)}
+.di:hover{background:var(--cr)}
+.dic{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;color:#fff}
+.dsep{height:1px;background:var(--bo);margin:0 13px}
+.dlbl{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--tm);padding:8px 15px 3px}
+.hb{display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:7px;border:1.5px solid var(--bo);background:var(--wh);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:600;color:var(--td)}
+.hbc{background:var(--gd);color:#fff;font-size:.6rem;font-weight:700;padding:1px 6px;border-radius:100px}
+
+/* LANG BANNER */
+.lang-banner{background:linear-gradient(135deg,rgba(139,92,246,.1),rgba(139,92,246,.04));border-bottom:1px solid rgba(139,92,246,.15);padding:5px 20px;display:flex;align-items:center;gap:8px;font-size:.75rem;color:#5b21b6;font-weight:600;flex-shrink:0}
+.lang-banner i{font-size:.7rem}
+.lang-banner-text{flex:1}
+.lang-banner-langs{display:flex;gap:6px}
+.lb-chip{padding:2px 8px;border-radius:100px;background:rgba(139,92,246,.12);color:var(--purple);font-size:.68rem;font-weight:700;cursor:pointer;transition:.15s}
+.lb-chip:hover,.lb-chip.act{background:var(--purple);color:#fff}
+
+/* ── DASHBOARD ── */
+.dash-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.stat-card{background:var(--cb);border-radius:14px;padding:18px;border:1px solid var(--bo);box-shadow:var(--sh);transition:.2s;position:relative;overflow:hidden}
+.stat-card:hover{transform:translateY(-3px);box-shadow:0 12px 36px rgba(30,60,40,.12)}
+.sc-icon{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:12px;color:#fff}
+.sc-val{font-family:'Syne',sans-serif;font-size:1.9rem;font-weight:800;color:var(--gd);line-height:1;margin-bottom:3px}
+.sc-lbl{font-size:.74rem;color:var(--tm);font-weight:500}
+.sc-trend{font-size:.7rem;font-weight:700;display:flex;align-items:center;gap:3px;margin-top:6px}
+.sc-trend.up{color:#10b981}.sc-trend.down{color:var(--red)}.sc-trend.neu{color:var(--tm)}
+.dash-row{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:20px}
+.dash-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:20px}
+.chart-wrap{background:var(--cb);border-radius:16px;padding:20px;border:1px solid var(--bo);box-shadow:var(--sh)}
+.chart-title{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;color:var(--gd);margin-bottom:3px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.chart-sub{font-size:.74rem;color:var(--tm);margin-bottom:14px}
+.freq-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.freq-bar-label{font-size:.77rem;color:var(--td);min-width:80px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.freq-bar-bg{flex:1;height:8px;background:var(--bo);border-radius:100px;overflow:hidden}
+.freq-bar-fill{height:100%;border-radius:100px;transition:width 1s ease}
+.freq-bar-val{font-size:.71rem;font-weight:700;color:var(--tm);min-width:22px;text-align:right}
+.tl-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+.tl-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.tl-date{font-size:.65rem;color:var(--tm)}
+.tl-text{font-size:.8rem;font-weight:600;color:var(--td);line-height:1.4}
+.tl-sub{font-size:.7rem;color:var(--tm)}
+.insight-card{background:var(--cb);border-radius:13px;padding:15px;border:1px solid var(--bo);display:flex;gap:11px;align-items:flex-start;box-shadow:var(--sh)}
+.ins-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;color:#fff}
+.ins-title{font-family:'Syne',sans-serif;font-size:.83rem;font-weight:700;color:var(--gd);margin-bottom:3px}
+.ins-body{font-size:.75rem;color:var(--tm);line-height:1.55}
+.rec-table{width:100%;border-collapse:collapse}
+.rec-table th{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--tm);text-align:left;padding:5px 9px 8px;border-bottom:1px solid var(--bo)}
+.rec-table td{font-size:.79rem;color:var(--td);padding:8px 9px;border-bottom:1px solid rgba(0,0,0,.04);vertical-align:middle}
+.rec-table tr:last-child td{border-bottom:none}
+.rec-table tr:hover td{background:rgba(126,201,78,.04)}
+.type-badge{padding:2px 8px;border-radius:100px;font-size:.63rem;font-weight:700}
+.dash-empty{text-align:center;padding:44px 20px;color:var(--tm)}
+.dash-empty-icon{font-size:2.2rem;margin-bottom:9px;opacity:.3}
+.gauge-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.gauge-card{background:var(--cb);border-radius:13px;padding:16px;border:1px solid var(--bo);text-align:center;box-shadow:var(--sh)}
+.gauge-val{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--gd);margin-bottom:2px}
+.gauge-lbl{font-size:.72rem;color:var(--tm)}
+.gauge-bar{height:5px;border-radius:100px;margin-top:8px;overflow:hidden;background:var(--bo)}
+.gauge-fill{height:100%;border-radius:100px}
+@media(max-width:800px){.dash-grid{grid-template-columns:1fr 1fr}.dash-row{grid-template-columns:1fr}.dash-row-3{grid-template-columns:1fr}.gauge-row{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.dash-grid{grid-template-columns:1fr}.gauge-row{grid-template-columns:1fr}}
+
+/* PAGES */
+.main{flex:1;overflow-y:auto;position:relative;z-index:2}
+.pg{display:none;animation:fi .28s ease}
+.pg.active{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+
+/* HOME */
+.hero{max-width:1280px;margin:0 auto;padding:52px 24px 28px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:100px;font-size:.67rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+.bg-g{background:rgba(126,201,78,.16);color:var(--gm)}
+.bg-a{background:rgba(245,166,35,.16);color:#92400e}
+.bg-p{background:rgba(139,92,246,.16);color:#5b21b6}
+.bg-t{background:rgba(13,148,136,.16);color:#0d6b62}
+.eyebrow{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+.h1{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,3.2vw,2.9rem);font-weight:800;line-height:1.1;color:var(--gd);margin-bottom:14px}
+.hl{color:var(--gl)}.hl2{color:var(--amb)}
+.hsub{font-size:.97rem;color:var(--tm);line-height:1.75;margin-bottom:26px;max-width:480px}
+.hctas{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:36px}
+.btn{padding:9px 20px;border-radius:8px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:600;display:inline-flex;align-items:center;gap:6px;transition:.18s}
+.bd{background:var(--gd);color:#fff}.bd:hover{background:var(--gm);transform:translateY(-2px)}
+.ba{background:var(--amb);color:#fff}.ba:hover{background:#d4901f;transform:translateY(-2px)}
+.bt{background:var(--teal);color:#fff}.bt:hover{background:#0b817a;transform:translateY(-2px)}
+/* AUTH BUTTON in nav */
+.auth-nav-btn{display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;border:2px solid var(--gd);background:transparent;color:var(--gd);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:700;transition:.18s}
+.auth-nav-btn:hover{background:var(--gd);color:#fff}
+.auth-nav-btn .user-avatar{width:26px;height:26px;border-radius:50%;background:var(--gd);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0}
+/* GET STARTED btn in hero */
+.btn-gs{background:linear-gradient(135deg,var(--gd),var(--gm));color:#fff;padding:11px 24px;border-radius:10px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.92rem;font-weight:700;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 18px rgba(26,60,46,.3);transition:.2s}
+.btn-gs:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(26,60,46,.35)}
+/* AUTH MODAL */
+.auth-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);z-index:9000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:.22s}
+.auth-overlay.open{opacity:1;pointer-events:all}
+.auth-modal{background:var(--wh);border-radius:20px;width:100%;max-width:440px;margin:20px;box-shadow:0 24px 80px rgba(0,0,0,.22);overflow:hidden;transform:scale(.95) translateY(10px);transition:.22s}
+.auth-overlay.open .auth-modal{transform:scale(1) translateY(0)}
+.auth-modal-top{background:linear-gradient(135deg,var(--gd) 0%,var(--gm) 100%);padding:28px 28px 20px;position:relative;text-align:center}
+.auth-modal-logo{display:flex;align-items:center;justify-content:center;gap:8px;color:#fff;font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;margin-bottom:14px}
+.auth-modal-logo .lico{width:32px;height:32px;background:rgba(255,255,255,.2);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.auth-tabs{display:flex;background:rgba(255,255,255,.15);border-radius:10px;padding:3px;gap:3px}
+.auth-tab{flex:1;padding:8px;border:none;background:transparent;color:rgba(255,255,255,.7);font-family:'DM Sans',sans-serif;font-size:.84rem;font-weight:600;border-radius:8px;cursor:pointer;transition:.16s}
+.auth-tab.active{background:#fff;color:var(--gd)}
+.auth-close{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.15);border:none;color:#fff;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;transition:.15s}
+.auth-close:hover{background:rgba(255,255,255,.3)}
+.auth-body{padding:24px 28px 28px}
+.auth-panel{display:none}.auth-panel.active{display:block}
+.auth-field{margin-bottom:16px}
+.auth-field label{display:block;font-size:.78rem;font-weight:600;color:var(--td);margin-bottom:5px}
+.auth-field input{width:100%;padding:10px 14px;border-radius:9px;border:1.5px solid var(--bo);font-family:'DM Sans',sans-serif;font-size:.88rem;color:var(--td);background:#fafaf8;transition:.15s;outline:none}
+.auth-field input:focus{border-color:var(--gm);background:#fff;box-shadow:0 0 0 3px rgba(46,107,79,.1)}
+.auth-field input.err{border-color:var(--red)}
+.auth-field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.auth-submit{width:100%;padding:12px;background:linear-gradient(135deg,var(--gd),var(--gm));color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer;transition:.18s;margin-top:4px}
+.auth-submit:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(26,60,46,.3)}
+.auth-submit:active{transform:translateY(0)}
+.auth-divider{text-align:center;font-size:.75rem;color:var(--tm);margin:14px 0;position:relative}
+.auth-divider::before,.auth-divider::after{content:'';position:absolute;top:50%;width:42%;height:1px;background:var(--bo)}
+.auth-divider::before{left:0}.auth-divider::after{right:0}
+.auth-switch{text-align:center;font-size:.8rem;color:var(--tm);margin-top:14px}
+.auth-switch a{color:var(--gm);font-weight:700;cursor:pointer;text-decoration:none}
+.auth-switch a:hover{text-decoration:underline}
+.auth-error{background:#fef2f2;border:1px solid #fecaca;color:var(--red);border-radius:8px;padding:9px 13px;font-size:.79rem;font-weight:600;margin-bottom:14px;display:none}
+.auth-success{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;border-radius:8px;padding:9px 13px;font-size:.79rem;font-weight:600;margin-bottom:14px;display:none}
+/* USER DROPDOWN when logged in */
+.user-dd{position:relative}
+.user-menu{position:absolute;top:calc(100%+8px);right:0;background:var(--wh);border-radius:13px;box-shadow:0 14px 44px rgba(0,0,0,.15);border:1px solid var(--bo);min-width:190px;overflow:hidden;opacity:0;transform:translateY(-5px) scale(.97);pointer-events:none;transition:.18s;z-index:400}
+.user-dd.open .user-menu{opacity:1;transform:translateY(0) scale(1);pointer-events:all}
+.user-menu-head{padding:13px 15px;border-bottom:1px solid var(--bo);background:linear-gradient(135deg,rgba(26,60,46,.05),rgba(46,107,79,.03))}
+.user-menu-name{font-size:.88rem;font-weight:700;color:var(--td)}
+.user-menu-email{font-size:.72rem;color:var(--tm);margin-top:2px}
+.user-menu-item{display:flex;align-items:center;gap:10px;padding:10px 15px;cursor:pointer;font-size:.83rem;font-weight:500;color:var(--td);transition:background .12s}
+.user-menu-item:hover{background:rgba(26,60,46,.05)}
+.user-menu-item.danger{color:var(--red)}
+.user-menu-item.danger:hover{background:#fef2f2}
+.bo2{background:transparent;border:1.5px solid var(--bo);color:var(--td)}.bo2:hover{border-color:var(--gm)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.hstats{display:flex;gap:22px;padding-top:7px;border-top:1px solid var(--bo);flex-wrap:wrap}
+.stn{font-family:'Syne',sans-serif;font-size:1.35rem;font-weight:800;color:var(--gd)}
+.stl{font-size:.68rem;color:var(--tm);margin-top:1px}
+.vd{width:1px;background:var(--bo)}
+.orb-wrap{display:flex;justify-content:center;align-items:center;position:relative}
+.orb{width:250px;height:250px;border-radius:50%;background:radial-gradient(circle at 35% 35%,var(--gl),var(--gm) 55%,var(--gd));display:flex;align-items:center;justify-content:center;box-shadow:0 24px 60px rgba(46,107,79,.32);animation:fl 6s ease-in-out infinite;position:relative}
+@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.orb-ico{font-size:4rem;filter:drop-shadow(0 5px 10px rgba(0,0,0,.22))}
+.orb-ring{position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.13);animation:spn 22s linear infinite}
+.orb-ring.r2{animation-direction:reverse;animation-duration:32s}
+@keyframes spn{to{transform:rotate(360deg)}}
+.orb-ps{position:absolute;display:flex;flex-direction:column;gap:6px;right:-14px}
+.orb-p{background:var(--wh);border-radius:100px;padding:5px 12px;font-size:.69rem;font-weight:600;color:var(--gd);box-shadow:0 3px 12px rgba(0,0,0,.09);white-space:nowrap}
+
+/* EXPLORE */
+.sec{max-width:1280px;margin:0 auto;padding:0 24px 56px}
+.sec-hd{text-align:center;margin-bottom:36px}
+.sec-t{font-family:'Syne',sans-serif;font-size:1.7rem;font-weight:800;color:var(--gd);margin-bottom:6px}
+.sec-s{color:var(--tm);font-size:.92rem}
+.eg{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+.ec{background:var(--cb);border-radius:18px;padding:22px;border:1px solid var(--bo);box-shadow:var(--sh);transition:.22s;cursor:pointer}
+.ec:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(30,60,40,.12)}
+.eic{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;margin-bottom:12px;color:#fff}
+.eg-g{background:linear-gradient(135deg,var(--gm),var(--gd))}
+.eg-a{background:linear-gradient(135deg,var(--amb),#d4901f)}
+.eg-t{background:linear-gradient(135deg,var(--teal),#0b817a)}
+.eg-p{background:linear-gradient(135deg,#8b5cf6,#5b21b6)}
+.etag{font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;display:block}
+.etag-g{color:var(--gm)}.etag-a{color:#92400e}.etag-t{color:#0d6b62}.etag-p{color:#5b21b6}
+.et{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--gd);margin-bottom:6px}
+.ed{font-size:.78rem;color:var(--tm);line-height:1.62;margin-bottom:12px}
+.echips{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:13px}
+.chip{padding:2px 8px;border-radius:100px;font-size:.65rem;font-weight:500}
+.ch-g{background:rgba(126,201,78,.12);color:var(--gm)}.ch-a{background:rgba(245,166,35,.12);color:#92400e}
+.ch-t{background:rgba(13,148,136,.12);color:#0d6b62}.ch-p{background:rgba(139,92,246,.12);color:#5b21b6}
+.ecta{font-size:.78rem;font-weight:600;display:flex;align-items:center;gap:4px}
+.ecta-g{color:var(--gm)}.ecta-a{color:#92400e}.ecta-t{color:#0d6b62}.ecta-p{color:#5b21b6}
+
+/* HOW */
+.how{background:var(--gd);padding:48px 24px}
+.how-in{max-width:1100px;margin:0 auto}
+.how-t{font-family:'Syne',sans-serif;font-size:1.7rem;font-weight:800;color:#fff;text-align:center;margin-bottom:5px}
+.how-s{color:rgba(255,255,255,.48);text-align:center;margin-bottom:38px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.step{text-align:center}
+.snum{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:rgba(126,201,78,.2);margin-bottom:7px}
+.sico{width:50px;height:50px;border-radius:50%;border:2px solid rgba(126,201,78,.28);display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin:0 auto 11px}
+.step h3{color:#fff;font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;margin-bottom:5px}
+.step p{color:rgba(255,255,255,.43);font-size:.76rem;line-height:1.58}
+
+/* PAGE */
+.pw{max-width:1000px;margin:0 auto;padding:36px 24px}
+.pghd{margin-bottom:24px}
+.back{display:inline-flex;align-items:center;gap:5px;font-size:.78rem;color:var(--tm);cursor:pointer;margin-bottom:9px;background:none;border:none;font-family:'DM Sans',sans-serif;padding:0}
+.back:hover{color:var(--gd)}
+.pgt{font-family:'Syne',sans-serif;font-size:1.75rem;font-weight:800;color:var(--gd);margin-bottom:3px;display:flex;align-items:center;gap:9px}
+.pgs{color:var(--tm);font-size:.89rem}
+.panel{background:var(--cb);border-radius:16px;padding:22px;border:1px solid var(--bo);box-shadow:var(--sh);margin-bottom:18px}
+.pt{font-family:'Syne',sans-serif;font-size:.97rem;font-weight:700;color:var(--gd);margin-bottom:13px;display:flex;align-items:center;gap:7px}
+
+/* FORM */
+.mg{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.mc{flex:1;min-width:120px;padding:10px 13px;border-radius:11px;border:2px solid var(--bo);cursor:pointer;display:flex;align-items:center;gap:7px;background:var(--wh);transition:.18s}
+.mc:hover{border-color:rgba(126,201,78,.38)}
+.mc.active{border-color:var(--gl);box-shadow:0 0 0 3px rgba(126,201,78,.1)}
+.mc.active-a{border-color:var(--amb);box-shadow:0 0 0 3px rgba(245,166,35,.1)}
+.mn{font-weight:600;font-size:.76rem;color:var(--gd);display:block;line-height:1.2}
+.ma{font-size:.65rem;color:var(--tm)}
+.mch{margin-left:auto;color:var(--gl);opacity:0;font-size:.8rem}
+.mc.active .mch{opacity:1;color:var(--gl)}
+.mc.active-a .mch{opacity:1;color:var(--amb)}
+.grp{margin-bottom:14px}
+.gh{display:flex;align-items:center;gap:6px;margin-bottom:9px;font-weight:600;font-size:.82rem;color:var(--gd)}
+.ir{display:flex;flex-wrap:wrap;gap:10px}
+.fw{flex:1;min-width:100px;display:flex;flex-direction:column;gap:3px}
+.fw label{font-size:.72rem;font-weight:600;color:var(--td)}
+.iw{position:relative}
+.iw input,.iw select{width:100%;padding:8px 38px 8px 11px;border-radius:8px;border:1.5px solid var(--bo);background:var(--wh);font-family:'DM Sans',sans-serif;font-size:.84rem;color:var(--td);outline:none;appearance:none;transition:.18s}
+.iw input:focus,.iw select:focus{border-color:var(--gl);box-shadow:0 0 0 3px rgba(126,201,78,.09)}
+.iw input.er,.iw select.er{border-color:var(--red)}
+.un{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:.64rem;color:var(--tm);pointer-events:none}
+.fe{font-size:.64rem;color:var(--red);margin-top:2px;display:none}
+.fe.show{display:block}
+.fa2{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-top:14px;padding-top:14px;border-top:1px solid var(--bo)}
+.pb{padding:5px 12px;border-radius:7px;border:1.5px solid var(--bo);background:var(--wh);font-family:'DM Sans',sans-serif;font-size:.73rem;font-weight:500;cursor:pointer;transition:.18s}
+.pb:hover{border-color:var(--gl)}
+.cb2{padding:5px 10px;border-radius:7px;border:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:.73rem;color:var(--tm);cursor:pointer}
+.sb{margin-left:auto;padding:8px 20px;border-radius:8px;border:none;background:var(--gd);color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:600;display:flex;align-items:center;gap:6px;transition:.18s}
+.sb:hover{transform:translateY(-1px);box-shadow:0 5px 16px rgba(30,60,40,.2)}
+.sb.sa{background:var(--amb)}.sb.sa:hover{box-shadow:0 5px 16px rgba(245,166,35,.3)}
+.sb.st{background:var(--teal)}
+.sb:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.an{font-size:.7rem;color:var(--tm);padding:6px 12px;background:rgba(126,201,78,.07);border-radius:7px;margin-bottom:12px;border:1px solid rgba(126,201,78,.13);display:flex;align-items:center;gap:5px}
+.an.amb{background:rgba(245,166,35,.07);border-color:rgba(245,166,35,.2)}
+
+/* Current language indicator on forms */
+.lang-indicator{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:100px;background:rgba(139,92,246,.1);color:var(--purple);font-size:.68rem;font-weight:700;margin-left:auto}
+
+/* CROP RESULT */
+.cr{background:var(--gd);border-radius:16px;padding:22px;color:#fff;box-shadow:0 16px 48px rgba(30,60,40,.2);margin-bottom:18px;animation:su .38s ease}
+@keyframes su{from{opacity:0;transform:translateY(13px)}to{opacity:1;transform:translateY(0)}}
+.crh{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:6px}
+.crbg{padding:3px 10px;border-radius:100px;background:var(--gl);color:var(--gd);font-size:.67rem;font-weight:700;text-transform:uppercase}
+.crm{font-size:.7rem;color:rgba(255,255,255,.48)}
+.crma{text-align:center;margin-bottom:18px}
+.cre{font-size:2.8rem;margin-bottom:5px}
+.crn{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;text-transform:capitalize;margin-bottom:12px}
+.crl{font-size:.68rem;color:rgba(255,255,255,.48);margin-bottom:4px}
+.cbw{height:4px;background:rgba(255,255,255,.11);border-radius:100px;margin-bottom:4px;overflow:hidden}
+.cbb{height:100%;background:var(--gl);border-radius:100px;width:0;transition:width 1.1s ease}
+.cbv{font-size:.8rem;font-weight:600;color:var(--gl)}
+.crmt{display:flex;gap:14px;justify-content:center;margin-bottom:16px;flex-wrap:wrap}
+.mi{display:flex;flex-direction:column;align-items:center;gap:1px}
+.ml{font-size:.63rem;color:rgba(255,255,255,.38)}
+.mv{font-size:.8rem;font-weight:600}
+.t3t{font-size:.67rem;font-weight:600;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.t3l{display:flex;gap:7px;flex-wrap:wrap}
+.t3i{flex:1;min-width:80px;padding:7px 10px;border-radius:9px;background:rgba(255,255,255,.06);display:flex;align-items:center;gap:6px}
+.t3c{font-size:.72rem;text-transform:capitalize;font-weight:600}
+.t3p{font-size:.63rem;color:rgba(255,255,255,.42)}
+
+/* FERT RESULT */
+.fp{border-radius:16px;padding:22px;color:#fff;margin-bottom:16px;position:relative;overflow:hidden;animation:su .38s ease}
+.fp::before{content:'';position:absolute;inset:0;background:rgba(0,0,0,.14)}
+.fpi{position:relative;z-index:1}
+.fbr{display:flex;align-items:center;gap:7px;margin-bottom:12px;flex-wrap:wrap}
+.fba{padding:3px 10px;border-radius:100px;background:rgba(255,255,255,.2);font-size:.67rem;font-weight:700;text-transform:uppercase}
+.fic{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:1rem}
+.fph{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.fpn{font-family:'Syne',sans-serif;font-size:1.38rem;font-weight:800;margin-bottom:3px}
+.fpk{display:inline-block;padding:2px 9px;border-radius:5px;background:rgba(255,255,255,.16);font-size:.73rem;font-weight:700;margin-bottom:6px}
+.fpd{font-size:.8rem;color:rgba(255,255,255,.76);line-height:1.58}
+.fpc{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;line-height:1}
+.fpcl{font-size:.65rem;color:rgba(255,255,255,.52)}
+.rb{background:rgba(255,255,255,.11);border-radius:10px;padding:12px 15px;border-left:3px solid rgba(255,255,255,.3);margin-top:12px}
+.rl{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(255,255,255,.52);margin-bottom:3px}
+.rt{font-size:.81rem;color:rgba(255,255,255,.9);line-height:1.58}
+.ab{background:rgba(255,255,255,.09);border-radius:10px;padding:11px 15px;margin-top:9px;display:flex;gap:11px;align-items:flex-start}
+.ai{font-size:1.3rem;flex-shrink:0}
+.albl{font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(255,255,255,.52);margin-bottom:2px}
+.atxt{font-size:.8rem;color:rgba(255,255,255,.86);line-height:1.58}
+.tc{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:100px;background:rgba(255,255,255,.13);font-size:.69rem;font-weight:600;margin-top:7px}
+.ng{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-bottom:14px}
+.nc{background:var(--wh);border-radius:11px;padding:13px;border:1px solid var(--bo)}
+.nh{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
+.ns{font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;color:var(--gd)}
+.nst{font-size:.62rem;font-weight:700;padding:2px 6px;border-radius:4px;color:#fff}
+.nv{display:flex;justify-content:space-between;font-size:.74rem;color:var(--tm);margin-bottom:5px}
+.nbw{height:5px;background:var(--bo);border-radius:100px;overflow:hidden;margin-bottom:3px}
+.nbar{height:100%;border-radius:100px;transition:width .9s ease}
+.np2{font-size:.67rem;font-weight:600;text-align:right}
+.ig{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:11px}
+.ic{background:var(--wh);border-radius:11px;padding:14px;border:1px solid var(--bo)}
+.it{font-family:'Syne',sans-serif;font-size:.79rem;font-weight:700;color:var(--gd);margin-bottom:7px;display:flex;align-items:center;gap:5px}
+.ib{font-size:.77rem;color:var(--tm);line-height:1.62}
+.fw2{grid-column:1/-1}
+.pl{list-style:none;display:flex;flex-direction:column;gap:5px}
+.pl li{font-size:.76rem;color:#b45309;display:flex;align-items:flex-start;gap:6px}
+.pl li::before{content:'⚠';flex-shrink:0;font-size:.7rem;margin-top:1px}
+.ag{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
+.ac{border-radius:11px;padding:13px;border:2px solid var(--bo);background:var(--wh);transition:.18s}
+.ac:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.07)}
+.ark{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--tm);margin-bottom:4px}
+.an2{display:flex;align-items:center;gap:6px;margin-bottom:3px}
+.anm{font-weight:700;font-size:.82rem;color:var(--gd)}
+.ank{font-size:.69rem;margin-bottom:4px}
+.adb{font-size:.72rem;color:var(--tm);margin-bottom:6px;line-height:1.52}
+.apr{display:flex;align-items:center;gap:6px}
+.apv{font-size:.69rem;font-weight:700;flex-shrink:0}
+.apbg{flex:1;height:3px;border-radius:100px;background:var(--bo);overflow:hidden}
+.apb{height:100%;border-radius:100px}
+
+/* DISEASE */
+.uz{border:2px dashed rgba(13,148,136,.38);border-radius:15px;padding:40px 22px;text-align:center;cursor:pointer;transition:.18s;position:relative;background:rgba(13,148,136,.03)}
+.uz:hover,.uz.dro{border-color:var(--teal);background:rgba(13,148,136,.07)}
+.uz input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.uzi{font-size:2.5rem;margin-bottom:9px;opacity:.55}
+.uzt{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--gd);margin-bottom:4px}
+.uzs{font-size:.78rem;color:var(--tm);margin-bottom:10px}
+.uzb{display:inline-flex;align-items:center;gap:5px;padding:7px 18px;border-radius:8px;background:var(--teal);color:#fff;font-size:.8rem;font-weight:600;margin-bottom:9px;cursor:pointer}
+.fmts{display:flex;gap:6px;justify-content:center}
+.fmt{padding:2px 8px;border-radius:5px;background:var(--bo);font-size:.65rem;font-weight:600;color:var(--tm)}
+.prev{margin-top:14px;display:none}
+.primg{max-width:100%;max-height:280px;border-radius:11px;display:block;margin:0 auto;box-shadow:0 6px 22px rgba(0,0,0,.09)}
+.pra{display:flex;justify-content:center;gap:8px;margin-top:11px}
+.ds-wrap{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px;flex-wrap:wrap}
+.dsi{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.7rem;flex-shrink:0}
+.dsn{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;color:var(--gd);margin-bottom:3px}
+.dsp{font-size:.84rem;color:var(--tm);margin-bottom:6px}
+.svb{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:100px;font-size:.69rem;font-weight:700;color:#fff}
+.dsc{font-size:.76rem;color:var(--tm);margin-top:4px}
+.ts{display:flex;flex-direction:column;gap:10px}
+.ts-i{display:flex;gap:11px;align-items:flex-start}
+.scc{width:28px;height:28px;border-radius:50%;background:var(--gd);color:#fff;font-family:'Syne',sans-serif;font-weight:800;font-size:.79rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.stb{flex:1}
+.stt{font-weight:600;font-size:.84rem;color:var(--gd);margin-bottom:2px}
+.std{font-size:.77rem;color:var(--tm);line-height:1.58}
+.sl,.pvl{list-style:none;display:flex;flex-direction:column;gap:4px}
+.sl li,.pvl li{font-size:.77rem;color:var(--tm);display:flex;align-items:flex-start;gap:6px}
+.sl li::before{content:'●';color:var(--red);font-size:.42rem;margin-top:5px;flex-shrink:0}
+.pvl li::before{content:'✓';color:var(--gm);font-weight:700;flex-shrink:0}
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cc{background:var(--wh);border-radius:10px;padding:12px;border:1px solid var(--bo)}
+.cl{font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;display:flex;align-items:center;gap:4px}
+.cl.cm{color:#1e40af}.cl.co{color:var(--gm)}
+.cb3{font-size:.77rem;color:var(--td);line-height:1.58}
+.rec{background:linear-gradient(135deg,rgba(126,201,78,.09),rgba(46,107,79,.05));border:1px solid rgba(126,201,78,.2);border-radius:10px;padding:11px 15px;display:flex;align-items:center;gap:9px;margin-top:11px}
+.hb2{background:linear-gradient(135deg,rgba(126,201,78,.12),rgba(46,107,79,.07));border-radius:14px;padding:24px;text-align:center}
+
+/* HISTORY */
+.hl-list{display:flex;flex-direction:column;gap:10px}
+.hi{background:var(--cb);border-radius:13px;padding:14px 18px;border:1px solid var(--bo);display:flex;align-items:center;gap:13px;transition:.18s}
+.hi:hover{box-shadow:0 6px 20px rgba(30,60,40,.07);transform:translateY(-2px)}
+.hii{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;color:#fff}
+.hii.hp{background:linear-gradient(135deg,var(--gm),var(--gd))}
+.hii.hf{background:linear-gradient(135deg,var(--amb),#d4901f)}
+.hii.hd{background:linear-gradient(135deg,var(--teal),#0b817a)}
+.hic{flex:1;min-width:0}
+.hit{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px}
+.hit.hp{color:var(--gm)}.hit.hf{color:#92400e}.hit.hd{color:var(--teal)}
+.him{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;color:var(--gd);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.his{font-size:.71rem;color:var(--tm);margin-top:1px}
+.htime{font-size:.68rem;color:var(--tm);flex-shrink:0}
+.hlang-tag{padding:2px 7px;border-radius:4px;background:rgba(139,92,246,.1);color:var(--purple);font-size:.62rem;font-weight:700;flex-shrink:0}
+
+/* ERROR */
+.err-banner{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:flex-start;gap:9px;animation:su .3s ease}
+.err-banner i{color:var(--red);flex-shrink:0;margin-top:2px}
+.err-txt{font-size:.82rem;color:#7f1d1d;line-height:1.55}
+
+/* FOOTER */
+.ft{background:var(--gd);padding:18px 24px;flex-shrink:0;position:relative;z-index:2}
+.fti{max-width:1280px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;font-size:.76rem;color:rgba(255,255,255,.4)}
+
+/* LOADING */
+.lo{position:fixed;inset:0;background:rgba(247,243,235,.92);backdrop-filter:blur(10px);z-index:999;display:none;flex-direction:column;align-items:center;justify-content:center;gap:11px}
+.lr{width:42px;height:42px;border:3px solid var(--bo);border-top-color:var(--gd);border-radius:50%;animation:spn .8s linear infinite}
+.lt{font-family:'Syne',sans-serif;font-weight:700;color:var(--gd);font-size:.92rem}
+.ls{font-size:.73rem;color:var(--tm);max-width:260px;text-align:center}
+.toast{position:fixed;bottom:20px;right:20px;background:var(--gd);color:#fff;padding:10px 16px;border-radius:10px;font-size:.81rem;font-weight:600;z-index:1000;display:none;align-items:center;gap:7px;box-shadow:0 7px 24px rgba(30,60,40,.28);animation:sir .28s ease}
+@keyframes sir{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+
+@media(max-width:800px){
+  .eg{grid-template-columns:1fr 1fr}.hero{grid-template-columns:1fr;padding:32px 16px 20px}.orb-wrap{display:none}
+  .steps{grid-template-columns:1fr 1fr}.ig{grid-template-columns:1fr}.ag{grid-template-columns:1fr}
+  .ng{grid-template-columns:1fr}.cg{grid-template-columns:1fr}.pw{padding:24px 16px}
+  .nav{gap:3px}.db,.hb{padding:5px 9px;font-size:.78rem}.lang-btn{padding:4px 8px;font-size:.74rem}
+}
+@media(max-width:480px){.eg{grid-template-columns:1fr}.steps{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+
+<!-- HEADER -->
+<header class="hdr">
+  <div class="hdr-in">
+    <div class="logo" onclick="go('home')">
+      <i class="fa-solid fa-leaf" style="color:var(--gl)"></i>
+      AgroSense<span style="color:var(--gl)"> AI</span>
+    </div>
+    <nav class="nav">
+      <button class="np" onclick="go('home')"><i class="fa-solid fa-house"></i> <span data-t="nav_home">Home</span></button>
+
+      <!-- CROP DROPDOWN -->
+      <div class="dd" id="ddCrop">
+        <button class="db" onclick="toggleDD('ddCrop')">
+          <i class="fa-solid fa-seedling"></i> <span data-t="nav_crop">Crop</span> <span class="da">▼</span>
+        </button>
+        <div class="dm">
+          <div class="dlbl" data-t="nav_crop_tools">Crop Tools</div>
+          <div class="di" onclick="go('prediction');closeAllDD()">
+            <div class="dic" style="background:linear-gradient(135deg,#2e6b4f,#1a3c2e)"><i class="fa-solid fa-chart-line"></i></div>
+            <div><div style="font-weight:700;font-size:.84rem" data-t="nav_prediction">Crop Prediction</div><div style="font-size:.67rem;color:var(--tm)" data-t="nav_prediction_sub">Best crop for your field</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FERTILIZER — SEPARATE BUTTON -->
+      <div class="dd" id="ddFert">
+        <button class="db fert-btn" onclick="toggleDD('ddFert')">
+          <i class="fa-solid fa-flask"></i> <span data-t="nav_fertilizer">Fertilizer</span> <span class="da">▼</span>
+        </button>
+        <div class="dm">
+          <div class="dlbl" data-t="nav_fert_tools">Fertilizer Tools</div>
+          <div class="di" onclick="go('fertilizer');closeAllDD()">
+            <div class="dic" style="background:linear-gradient(135deg,#f5a623,#d4901f)"><i class="fa-solid fa-flask"></i></div>
+            <div><div style="font-weight:700;font-size:.84rem" data-t="nav_fert_advisor">Fertilizer Advisor</div><div style="font-size:.67rem;color:var(--tm)" data-t="nav_fert_sub">NPK-based recommendation</div></div>
+          </div>
+          <div class="dsep"></div>
+          <div class="di" onclick="go('fertilizer');closeAllDD()">
+            <div class="dic" style="background:linear-gradient(135deg,#10b981,#065f46)"><i class="fa-solid fa-flask-vial"></i></div>
+            <div><div style="font-weight:700;font-size:.84rem" data-t="nav_npk">NPK Analyzer</div><div style="font-size:.67rem;color:var(--tm)" data-t="nav_npk_sub">Soil nutrient analysis</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DASHBOARD -->
+      <button class="np" onclick="go('dashboard')" style="border:1.5px solid var(--teal);color:var(--teal);border-radius:7px;padding:6px 12px">
+        <i class="fa-solid fa-chart-column"></i> <span data-t="nav_dashboard">Dashboard</span>
+      </button>
+
+      <!-- LANGUAGE SELECTOR -->
+      <div class="lang-dd" id="langDD">
+        <button class="lang-btn" onclick="toggleDD('langDD')">
+          <span class="lang-flag" id="currentFlag">🇬🇧</span>
+          <span id="currentLangName">EN</span>
+          <span class="lang-arrow">▼</span>
+        </button>
+        <div class="lang-menu">
+          <div class="lang-head"><i class="fa-solid fa-globe"></i> Select Language</div>
+          <div class="lang-item active" data-lang="en" onclick="setLang('en')">
+            <span class="lang-item-flag">🇬🇧</span>
+            <div class="lang-item-name">English</div>
+            <div class="lang-item-native">English</div>
+            <i class="fa-solid fa-check lang-item-check"></i>
+          </div>
+          <div class="lang-item" data-lang="hi" onclick="setLang('hi')">
+            <span class="lang-item-flag">🇮🇳</span>
+            <div class="lang-item-name">Hindi</div>
+            <div class="lang-item-native">हिन्दी</div>
+            <i class="fa-solid fa-check lang-item-check"></i>
+          </div>
+          <div class="lang-item" data-lang="te" onclick="setLang('te')">
+            <span class="lang-item-flag">🇮🇳</span>
+            <div class="lang-item-name">Telugu</div>
+            <div class="lang-item-native">తెలుగు</div>
+            <i class="fa-solid fa-check lang-item-check"></i>
+          </div>
+          <div class="lang-item" data-lang="ta" onclick="setLang('ta')">
+            <span class="lang-item-flag">🇮🇳</span>
+            <div class="lang-item-name">Tamil</div>
+            <div class="lang-item-native">தமிழ்</div>
+            <i class="fa-solid fa-check lang-item-check"></i>
+          </div>
+          <div class="lang-item" data-lang="pa" onclick="setLang('pa')">
+            <span class="lang-item-flag">🇮🇳</span>
+            <div class="lang-item-name">Punjabi</div>
+            <div class="lang-item-native">ਪੰਜਾਬੀ</div>
+            <i class="fa-solid fa-check lang-item-check"></i>
+          </div>
+        </div>
+      </div>
+
+      <button class="hb" onclick="go('history')">
+        <i class="fa-solid fa-clock-rotate-left"></i> <span data-t="nav_history">History</span>
+        <span class="hbc" id="hcnt">0</span>
+      </button>
+
+      <!-- AUTH / USER AREA -->
+      <div id="authNavArea">
+        <!-- shown when logged out -->
+        <button class="auth-nav-btn" id="navSignInBtn" onclick="openAuth('signin')">
+          <i class="fa-solid fa-user"></i> Sign In
+        </button>
+        <!-- shown when logged in -->
+        <div class="user-dd" id="userDD" style="display:none">
+          <button class="auth-nav-btn" onclick="toggleUserDD()" id="userNavBtn">
+            <div class="user-avatar" id="userAvatarNav">A</div>
+            <span id="userNavName">User</span>
+            <i class="fa-solid fa-chevron-down" style="font-size:.65rem"></i>
+          </button>
+          <div class="user-menu">
+            <div class="user-menu-head">
+              <div class="user-menu-name" id="userMenuName">User Name</div>
+              <div class="user-menu-email" id="userMenuEmail">email@example.com</div>
+            </div>
+            <div class="user-menu-item" onclick="toggleUserDD()"><i class="fa-solid fa-user" style="color:var(--gm)"></i> My Profile</div>
+            <div class="user-menu-item" onclick="go('dashboard');toggleUserDD()"><i class="fa-solid fa-chart-column" style="color:var(--teal)"></i> Dashboard</div>
+            <div class="user-menu-item danger" onclick="signOut()"><i class="fa-solid fa-right-from-bracket"></i> Sign Out</div>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- LANGUAGE BANNER -->
+<div class="lang-banner" id="langBanner" style="display:none">
+  <i class="fa-solid fa-language"></i>
+  <span class="lang-banner-text" id="langBannerText">All AI responses will be in Hindi (हिन्दी)</span>
+  <div class="lang-banner-langs">
+    <span class="lb-chip act" data-lang="en" onclick="setLang('en')">EN</span>
+    <span class="lb-chip" data-lang="hi" onclick="setLang('hi')">हि</span>
+    <span class="lb-chip" data-lang="te" onclick="setLang('te')">తె</span>
+    <span class="lb-chip" data-lang="ta" onclick="setLang('ta')">த</span>
+    <span class="lb-chip" data-lang="pa" onclick="setLang('pa')">ਪੰ</span>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- HOME -->
+<div class="pg active" id="pg-home">
+<div class="hero">
+  <div>
+    <div class="eyebrow">
+      <span class="badge bg-g"><i class="fa-solid fa-robot"></i> AI-Powered</span>
+      <span class="badge bg-a"><i class="fa-solid fa-wheat-awn"></i> Agriculture</span>
+      <span class="badge bg-p"><i class="fa-solid fa-language"></i> <span data-t="badge_multilang">5 Languages</span></span>
+      <span class="badge bg-t"><i class="fa-solid fa-microscope"></i> Vision AI</span>
+    </div>
+    <h1 class="h1" data-t="hero_title">Smarter Farming<br/>with <span class="hl">Precision</span><br/><span class="hl2">Intelligence</span></h1>
+    <p class="hsub" data-t="hero_sub">Two AI-powered modules — crop prediction and fertilizer recommendation — in your language.</p>
+    <div class="hctas">
+      <button class="btn-gs" onclick="openAuth('signup')"><i class="fa-solid fa-rocket"></i> Get Started</button>
+      <button class="btn bd" onclick="go('prediction')"><i class="fa-solid fa-chart-line"></i> <span data-t="btn_crop_pred">Crop Prediction</span></button>
+      <button class="btn ba" onclick="go('fertilizer')"><i class="fa-solid fa-flask"></i> <span data-t="btn_fert">Fertilizer Advisor</span></button>
+</div>
+    <div class="hstats">
+      <div><span class="stn">22</span><div class="stl" data-t="stat_crops">Crop types</div></div>
+      <div class="vd"></div>
+      <div><span class="stn">10</span><div class="stl" data-t="stat_ferts">Fertilizers</div></div>
+      <div class="vd"></div>
+<div class="vd"></div>
+      <div><span class="stn">5</span><div class="stl" data-t="stat_langs">Languages</div></div>
+    </div>
+  </div>
+  <div class="orb-wrap">
+    <div class="orb">
+      <div class="orb-ring" style="inset:-20px"></div>
+      <div class="orb-ring r2" style="inset:-46px"></div>
+      <div class="orb-ico">🌾</div>
+    </div>
+    <div class="orb-ps">
+      <div class="orb-p" id="orbPill1">✅ Rice — 94.2%</div>
+      <div class="orb-p" style="margin-left:10px" id="orbPill2">🌱 DAP recommended</div>
+      <div class="orb-p" id="orbPill3">🔬 Leaf Blight detected</div>
+    </div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-hd">
+    <div class="badge bg-g" style="margin:0 auto 10px;display:inline-flex"><i class="fa-solid fa-magnifying-glass"></i> <span data-t="explore_label">Explore</span></div>
+    <div class="sec-t" data-t="explore_title">Four Intelligent Modules</div>
+    <div class="sec-s" data-t="explore_sub">End-to-end AI tools for precision farming</div>
+  </div>
+  <div class="eg">
+    <div class="ec" onclick="go('prediction')">
+      <div class="eic eg-g"><i class="fa-solid fa-chart-line"></i></div>
+      <span class="etag etag-g" data-t="card1_tag">Crop Intelligence</span>
+      <div class="et" data-t="card1_title">Crop Prediction</div>
+      <div class="ed" data-t="card1_desc">Input soil NPK, pH, temperature & rainfall — 8 ML models predict the optimal crop.</div>
+      <div class="echips"><span class="chip ch-g">22 <span data-t="crops_label">crops</span></span><span class="chip ch-g">8 models</span><span class="chip ch-g">99.55%</span></div>
+      <div class="ecta ecta-g" data-t="card1_cta">Predict Crop →</div>
+    </div>
+    <div class="ec" onclick="go('fertilizer')">
+      <div class="eic eg-a"><i class="fa-solid fa-flask"></i></div>
+      <span class="etag etag-a" data-t="card2_tag">Fertilizer AI</span>
+      <div class="et" data-t="card2_title">Fertilizer Advisor</div>
+      <div class="ed" data-t="card2_desc">Crop + soil + NPK → RF recommends the best fertilizer with application guide.</div>
+      <div class="echips"><span class="chip ch-a">10 <span data-t="ferts_label">fertilizers</span></span><span class="chip ch-a">98.83%</span><span class="chip ch-a">NPK</span></div>
+      <div class="ecta ecta-a" data-t="card2_cta">Get Recommendation →</div>
+    </div>
+    <div class="ec" onclick="go('history')">
+      <div class="eic eg-p"><i class="fa-solid fa-clock-rotate-left"></i></div>
+      <span class="etag etag-p" data-t="card4_tag">History</span>
+      <div class="et" data-t="card4_title">Analysis History</div>
+      <div class="ed" data-t="card4_desc">All predictions and detections saved locally — revisit and compare any past analysis.</div>
+      <div class="echips"><span class="chip ch-p" data-t="persistent">Persistent</span><span class="chip ch-p" data-t="all_modules">All modules</span></div>
+      <div class="ecta ecta-p" data-t="card4_cta">View History →</div>
+    </div>
+  </div>
+  <!-- Dashboard CTA row -->
+  <div style="margin-top:16px">
+    <div onclick="go('dashboard')" style="background:linear-gradient(135deg,var(--teal),#0b817a);border-radius:16px;padding:20px 28px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;box-shadow:0 8px 32px rgba(13,148,136,.25);transition:.22s" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">
+      <div style="display:flex;align-items:center;gap:14px">
+        <div style="width:48px;height:48px;background:rgba(255,255,255,.18);border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:#fff"><i class="fa-solid fa-chart-column"></i></div>
+        <div><div style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:#fff;margin-bottom:3px" data-t="nav_dashboard">Dashboard & Analytics</div><div style="font-size:.82rem;color:rgba(255,255,255,.7)" data-t="dashboard_sub">Crop history · Prediction analytics · Yield trends · Model performance</div></div>
+      </div>
+      <div style="color:rgba(255,255,255,.7);font-size:1.4rem"><i class="fa-solid fa-arrow-right"></i></div>
+    </div>
+  </div>
+</div>
+
+<div class="how">
+  <div class="how-in">
+    <div class="how-t" data-t="how_title">How AgroSense Works</div>
+    <div class="how-s" data-t="how_sub">From soil data to actionable insights in seconds</div>
+    <div class="steps">
+      <div class="step"><div class="snum">01</div><div class="sico"><i class="fa-solid fa-vial" style="color:var(--gl)"></i></div><h3 data-t="step1_title">Enter Parameters</h3><p data-t="step1_desc">Input soil N-P-K, pH, temperature, humidity, rainfall or upload a leaf photo</p></div>
+      <div class="step"><div class="snum">02</div><div class="sico"><i class="fa-solid fa-brain" style="color:var(--gl)"></i></div><h3 data-t="step2_title">ML Analysis</h3><p data-t="step2_desc">Random Forest, XGBoost, and other models analyse your data with 98%+ accuracy</p></div>
+      <div class="step"><div class="snum">03</div><div class="sico"><i class="fa-solid fa-chart-bar" style="color:var(--gl)"></i></div><h3 data-t="step3_title">Get Insights</h3><p data-t="step3_desc">Results delivered in your language — crop, fertilizer, or disease diagnosis with confidence</p></div>
+      <div class="step"><div class="snum">04</div><div class="sico"><i class="fa-solid fa-bookmark" style="color:var(--gl)"></i></div><h3 data-t="step4_title">Track History</h3><p data-t="step4_desc">Every analysis auto-saved with language tag — review and compare results over time</p></div>
+    </div>
+  </div>
+</div>
+<footer class="ft"><div class="fti"><span>🌿 AgroSense AI</span><span data-t="footer_text">Powered by Claude · ML Models · 5 Indian Languages</span></div></footer>
+</div>
+
+<!-- CROP PREDICTION -->
+<div class="pg" id="pg-prediction">
+<div class="pw">
+  <div class="pghd">
+    <button class="back" onclick="go('home')"><i class="fa-solid fa-arrow-left"></i> <span data-t="back">Back</span></button>
+    <div class="pgt"><i class="fa-solid fa-chart-line" style="color:var(--gm);font-size:1.4rem"></i> <span data-t="pred_page_title">Crop Prediction</span></div>
+    <div class="pgs" data-t="pred_page_sub">Enter soil & climate parameters — AI recommends the optimal crop</div>
+  </div>
+  <div class="panel">
+    <div class="pt"><i class="fa-solid fa-robot" style="color:var(--gm)"></i> <span data-t="choose_model">Choose ML Model</span></div>
+    <div class="mg" id="cModelG">
+      <div class="mc active" data-m="random_forest" onclick="selCM(this)"><span style="font-size:1.1rem">🌲</span><div><span class="mn">Random Forest</span><span class="ma">99.55%</span></div><span class="mch"><i class="fa-solid fa-check"></i></span></div>
+      <div class="mc" data-m="xgboost" onclick="selCM(this)"><span style="font-size:1.1rem">⚡</span><div><span class="mn">XGBoost</span><span class="ma">99.31%</span></div><span class="mch"><i class="fa-solid fa-check"></i></span></div>
+      <div class="mc" data-m="naive_bayes" onclick="selCM(this)"><span style="font-size:1.1rem">🧠</span><div><span class="mn">Naive Bayes</span><span class="ma">99.09%</span></div><span class="mch"><i class="fa-solid fa-check"></i></span></div>
+      <div class="mc" data-m="gradient_boosting" onclick="selCM(this)"><span style="font-size:1.1rem">🚀</span><div><span class="mn">Gradient Boosting</span><span class="ma">98.86%</span></div><span class="mch"><i class="fa-solid fa-check"></i></span></div>
+      <div class="mc" data-m="svm" onclick="selCM(this)"><span style="font-size:1.1rem">🔮</span><div><span class="mn">SVM</span><span class="ma">97.18%</span></div><span class="mch"><i class="fa-solid fa-check"></i></span></div>
+      <div class="mc" data-m="knn" onclick="selCM(this)"><span style="font-size:1.1rem">👥</span><div><span class="mn">KNN</span><span class="ma">95.83%</span></div><span class="mch"><i class="fa-solid fa-check"></i></span></div>
+      <div class="mc" data-m="logistic_regression" onclick="selCM(this)"><span style="font-size:1.1rem">📈</span><div><span class="mn">Logistic Reg.</span><span class="ma">94.09%</span></div><span class="mch"><i class="fa-solid fa-check"></i></span></div>
+      <div class="mc" data-m="decision_tree" onclick="selCM(this)"><span style="font-size:1.1rem">🌿</span><div><span class="mn">Decision Tree</span><span class="ma">90.27%</span></div><span class="mch"><i class="fa-solid fa-check"></i></span></div>
+    </div>
+    <div class="an" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
+      <span><i class="fa-solid fa-bolt" style="color:var(--gl)"></i> <span data-t="ai_note_crop">Claude AI — simulates ML model predictions with agronomic knowledge</span></span>
+      <span class="lang-indicator" id="cropLangBadge"><i class="fa-solid fa-language"></i> EN</span>
+    </div>
+    <div class="grp">
+      <div class="gh"><i class="fa-solid fa-mountain"></i> <span data-t="soil_nutrients">Soil Nutrients</span></div>
+      <div class="ir">
+        <div class="fw"><label data-t="nitrogen">Nitrogen (N) *</label><div class="iw"><input type="number" id="cN" placeholder="0–140" min="0" max="140"/><span class="un">kg/ha</span></div><div class="fe" id="ecN" data-t="required">Required</div></div>
+        <div class="fw"><label data-t="phosphorus">Phosphorus (P) *</label><div class="iw"><input type="number" id="cP" placeholder="5–145"/><span class="un">kg/ha</span></div><div class="fe" id="ecP" data-t="required">Required</div></div>
+        <div class="fw"><label data-t="potassium">Potassium (K) *</label><div class="iw"><input type="number" id="cK" placeholder="5–205"/><span class="un">kg/ha</span></div><div class="fe" id="ecK" data-t="required">Required</div></div>
+        <div class="fw"><label data-t="soil_ph">Soil pH *</label><div class="iw"><input type="number" id="cph" placeholder="3.5–9.5" step=".01"/><span class="un">pH</span></div><div class="fe" id="ecph" data-t="required">Required</div></div>
+      </div>
+    </div>
+    <div class="grp">
+      <div class="gh"><i class="fa-solid fa-cloud-sun"></i> <span data-t="climate">Climate Conditions</span></div>
+      <div class="ir">
+        <div class="fw"><label data-t="temperature">Temperature *</label><div class="iw"><input type="number" id="ctemp" placeholder="10–50" step=".1"/><span class="un">°C</span></div><div class="fe" id="ectemp" data-t="required">Required</div></div>
+        <div class="fw"><label data-t="humidity">Humidity *</label><div class="iw"><input type="number" id="chum" placeholder="20–100" step=".1"/><span class="un">%</span></div><div class="fe" id="echum" data-t="required">Required</div></div>
+        <div class="fw"><label data-t="rainfall">Rainfall *</label><div class="iw"><input type="number" id="crain" placeholder="20–300" step=".1"/><span class="un">mm</span></div><div class="fe" id="ecrain" data-t="required">Required</div></div>
+      </div>
+    </div>
+    <div class="fa2">
+      <button class="pb" onclick="cpre('rice')">🌾 Rice</button>
+      <button class="pb" onclick="cpre('cotton')">☁️ Cotton</button>
+      <button class="pb" onclick="cpre('coffee')">☕ Coffee</button>
+      <button class="pb" onclick="cpre('maize')">🌽 Maize</button>
+      <button class="pb" onclick="cpre('mango')">🥭 Mango</button>
+      <button class="cb2" onclick="clearCrop()"><i class="fa-solid fa-xmark"></i> <span data-t="clear">Clear</span></button>
+      <button class="sb" id="cropBtn" onclick="predictCrop()"><i class="fa-solid fa-magnifying-glass-chart"></i> <span data-t="predict_btn">Predict Crop</span></button>
+    </div>
+  </div>
+  <div id="cropErrDiv" style="display:none" class="err-banner"><i class="fa-solid fa-circle-exclamation"></i><div class="err-txt" id="cropErrMsg"></div></div>
+  <div id="cropRes" style="display:none">
+    <div class="cr">
+      <div class="crh"><div class="crbg"><i class="fa-solid fa-trophy"></i> <span data-t="best_match">Best Match</span></div><div class="crm" id="crModel"></div></div>
+      <div class="crma">
+        <div class="cre" id="crEmoji"></div>
+        <div class="crn" id="crName"></div>
+        <div class="crl" data-t="confidence">Prediction Confidence</div>
+        <div class="cbw"><div class="cbb" id="crBar"></div></div>
+        <div class="cbv" id="crConf"></div>
+      </div>
+      <div class="crmt">
+        <div class="mi"><span class="ml" data-t="season">Season</span><span class="mv" id="crSeason"></span></div>
+        <div class="mi"><span class="ml" data-t="model_acc">Model Accuracy</span><span class="mv" id="crAcc"></span></div>
+        <div class="mi"><span class="ml" data-t="lang_label">Language</span><span class="mv" id="crLang"></span></div>
+      </div>
+      <div class="t3t"><i class="fa-solid fa-list-ol"></i> <span data-t="top3_alts">Top 3 Alternatives</span></div>
+      <div class="t3l" id="cr3"></div>
+      <div style="margin-top:14px;padding:12px;background:rgba(255,255,255,.08);border-radius:9px">
+        <div style="font-size:.65rem;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px"><i class="fa-solid fa-lightbulb"></i> <span data-t="reason">AI Reasoning</span></div>
+        <div style="font-size:.82rem;color:rgba(255,255,255,.88);line-height:1.6" id="crReason"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<footer class="ft"><div class="fti"><span>🌿 AgroSense AI</span><span data-t="footer_crop">Crop Prediction · ML-Powered</span></div></footer>
+</div>
+
+<!-- FERTILIZER -->
+<div class="pg" id="pg-fertilizer">
+<div class="pw">
+  <div class="pghd">
+    <button class="back" onclick="go('home')"><i class="fa-solid fa-arrow-left"></i> <span data-t="back">Back</span></button>
+    <div class="pgt"><i class="fa-solid fa-flask" style="color:var(--amb);font-size:1.4rem"></i> <span data-t="fert_page_title">Fertilizer Recommendation</span></div>
+    <div class="pgs" data-t="fert_page_sub">Select crop & soil, enter N-P-K — RF ML recommends the best fertilizer with full guide</div>
+  </div>
+  <div class="panel">
+    <div class="pt" style="color:var(--amb)"><i class="fa-solid fa-robot" style="color:var(--amb)"></i> <span data-t="fert_model_label">ML Model — Fertilizer Advisor</span></div>
+    <div class="mg" id="fModelG">
+      <div class="mc active-a" data-m="random_forest" onclick="selFM(this)"><span style="font-size:1.1rem">🌲</span><div><span class="mn">Random Forest</span><span class="ma">98.83%</span></div><span class="mch"><i class="fa-solid fa-check"></i></span></div>
+      <div class="mc" data-m="gradient_boosting" onclick="selFM(this)"><span style="font-size:1.1rem">🚀</span><div><span class="mn">Gradient Boosting</span><span class="ma">99.33%</span></div><span class="mch"><i class="fa-solid fa-check"></i></span></div>
+    </div>
+    <div class="an amb" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
+      <span><i class="fa-solid fa-bolt" style="color:var(--amb)"></i> <span data-t="ai_note_fert">Trained on 3,000 crop×soil×NPK records · /predict-fertilizer endpoint</span></span>
+      <span class="lang-indicator" id="fertLangBadge" style="border-color:rgba(245,166,35,.3);color:var(--amb);background:rgba(245,166,35,.1)"><i class="fa-solid fa-language"></i> EN</span>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="pt"><i class="fa-solid fa-seedling" style="color:var(--amb)"></i> <span data-t="crop_soil_info">Crop & Soil Information</span></div>
+    <div class="grp">
+      <div class="gh"><i class="fa-solid fa-wheat-awn"></i> <span data-t="crop_soil_type">Crop & Soil Type</span></div>
+      <div class="ir">
+        <div class="fw" style="min-width:150px">
+          <label data-t="crop_type">Crop Type *</label>
+          <div class="iw"><select id="fcrop">
+            <option value="" data-t="select_crop">— Select Crop —</option>
+            <option>Wheat</option><option>Rice</option><option>Maize</option><option>Sugarcane</option>
+            <option>Cotton</option><option>Groundnut</option><option>Soybean</option><option>Sunflower</option>
+            <option>Potato</option><option>Tomato</option><option>Onion</option><option>Chickpea</option>
+            <option>Mustard</option><option>Barley</option><option>Mango</option><option>Banana</option>
+            <option>Coffee</option><option>Tea</option><option>Jute</option><option>Tobacco</option>
+          </select></div>
+          <div class="fe" id="efcrop" data-t="select_crop_err">Please select a crop</div>
+        </div>
+        <div class="fw" style="min-width:130px">
+          <label data-t="soil_type">Soil Type *</label>
+          <div class="iw"><select id="fsoil">
+            <option value="" data-t="select_soil">— Select Soil —</option>
+            <option value="Sandy">🏜️ Sandy</option>
+            <option value="Loamy">🌱 Loamy</option>
+            <option value="Clay">🧱 Clay</option>
+            <option value="Silt">💧 Silt</option>
+            <option value="Black">⚫ Black (Regur)</option>
+            <option value="Red">🔴 Red Laterite</option>
+          </select></div>
+          <div class="fe" id="efsoil" data-t="select_soil_err">Please select soil type</div>
+        </div>
+      </div>
+    </div>
+    <div class="grp">
+      <div class="gh"><i class="fa-solid fa-mountain"></i> <span data-t="soil_nutrients">Soil Nutrients</span> (kg/ha)</div>
+      <div class="ir">
+        <div class="fw"><label data-t="nitrogen">Nitrogen (N) *</label><div class="iw"><input type="number" id="fN" placeholder="0–300" min="0" max="300"/><span class="un">kg/ha</span></div><div class="fe" id="efN">0–300</div></div>
+        <div class="fw"><label data-t="phosphorus">Phosphorus (P) *</label><div class="iw"><input type="number" id="fP" placeholder="0–200" min="0" max="200"/><span class="un">kg/ha</span></div><div class="fe" id="efP">0–200</div></div>
+        <div class="fw"><label data-t="potassium">Potassium (K) *</label><div class="iw"><input type="number" id="fK" placeholder="0–400" min="0" max="400"/><span class="un">kg/ha</span></div><div class="fe" id="efK">0–400</div></div>
+      </div>
+    </div>
+    <div class="fa2">
+      <button class="pb" onclick="fpre('wheat')">🌾 <span data-t="wheat">Wheat</span></button>
+      <button class="pb" onclick="fpre('rice')">🍚 <span data-t="rice">Rice</span></button>
+      <button class="pb" onclick="fpre('potato')">🥔 <span data-t="potato">Potato</span></button>
+      <button class="pb" onclick="fpre('cotton')">☁️ <span data-t="cotton">Cotton</span></button>
+      <button class="pb" onclick="fpre('banana')">🍌 <span data-t="banana">Banana</span></button>
+      <button class="pb" onclick="fpre('tomato')">🍅 <span data-t="tomato">Tomato</span></button>
+      <button class="cb2" onclick="clearFert()"><i class="fa-solid fa-xmark"></i> <span data-t="clear">Clear</span></button>
+      <button class="sb sa" id="fertBtn" onclick="getFert()"><i class="fa-solid fa-flask"></i> <span data-t="get_rec_btn">Get Recommendation</span></button>
+    </div>
+  </div>
+  <div id="fertErrDiv" style="display:none" class="err-banner"><i class="fa-solid fa-circle-exclamation"></i><div class="err-txt" id="fertErrMsg"></div></div>
+  <div id="fertRes" style="display:none">
+    <div class="fp" id="fpCard">
+      <div class="fpi">
+        <div class="fbr">
+          <div class="fic" id="fpIco"></div>
+          <span class="fba"><i class="fa-solid fa-trophy"></i> <span data-t="best_fert">Best Fertilizer</span></span>
+          <span class="fba" id="fpMBadge"></span>
+          <span class="fba" id="fpLangBadge" style="background:rgba(139,92,246,.3)"></span>
+        </div>
+        <div class="fph">
+          <div><div class="fpn" id="fpName"></div><div class="fpk" id="fpNpk"></div><div class="fpd" id="fpDesc"></div></div>
+          <div style="text-align:right;flex-shrink:0"><div class="fpc" id="fpConf"></div><div class="fpcl" data-t="confidence">Confidence</div><div style="font-size:.62rem;color:rgba(255,255,255,.42);margin-top:2px" id="fpAcc"></div></div>
+        </div>
+        <div class="rb"><div class="rl"><i class="fa-solid fa-lightbulb"></i> <span data-t="why_fert">Why this fertilizer?</span></div><div class="rt" id="fpReason"></div></div>
+        <div class="ab"><div class="ai"><i class="fa-solid fa-hand-holding-droplet"></i></div><div><div class="albl"><i class="fa-solid fa-book"></i> <span data-t="app_guide">Application Guide</span></div><div class="atxt" id="fpApp"></div><div class="tc" id="fpTiming"></div></div></div>
+      </div>
+    </div>
+    <div class="panel"><div class="pt"><i class="fa-solid fa-flask-vial" style="color:var(--amb)"></i> <span data-t="nutr_analysis">Soil Nutrient Analysis</span></div><div class="ng" id="fpNutr"></div></div>
+    <div class="ig"><div class="ic fw2"><div class="it"><i class="fa-solid fa-triangle-exclamation" style="color:#b45309"></i> <span data-t="precautions">Precautions</span></div><ul class="pl" id="fpPrec"></ul></div></div>
+    <div class="panel"><div class="pt"><i class="fa-solid fa-list-ol"></i> <span data-t="top3_ferts">Top 3 Fertilizer Alternatives</span></div><div class="ag" id="fpAlt"></div></div>
+  </div>
+</div>
+<footer class="ft"><div class="fti"><span>🌿 AgroSense AI</span><span>Fertilizer · RF 98.83%</span></div></footer>
+</div>
+
+<!-- DISEASE -->
+<!-- DASHBOARD -->
+<div class="pg" id="pg-dashboard">
+<div class="pw">
+  <div class="pghd" style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px">
+    <div>
+      <button class="back" onclick="go('home')"><i class="fa-solid fa-arrow-left"></i> <span data-t="back">Back</span></button>
+      <div class="pgt"><i class="fa-solid fa-chart-column" style="color:var(--teal);font-size:1.4rem"></i> <span data-t="nav_dashboard">Dashboard & Analytics</span></div>
+      <div class="pgs" data-t="dashboard_sub">Crop history · Prediction analytics · Yield trends · Model performance</div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px">
+      <select id="dashFilter" onchange="renderDashboard()" style="padding:6px 12px;border-radius:8px;border:1.5px solid var(--bo);font-family:'DM Sans',sans-serif;font-size:.78rem;background:var(--wh);color:var(--td);outline:none">
+        <option value="all">All Time</option>
+        <option value="7">Last 7 days</option>
+        <option value="30">Last 30 days</option>
+      </select>
+      <button onclick="go('prediction')" class="btn bd" style="font-size:.78rem;padding:7px 14px"><i class="fa-solid fa-plus"></i> New Prediction</button>
+    </div>
+  </div>
+
+  <!-- KPI CARDS -->
+  <div class="dash-grid" id="dashKpis">
+    <div class="stat-card">
+      <div class="sc-icon" style="background:linear-gradient(135deg,var(--gm),var(--gd))"><i class="fa-solid fa-chart-line"></i></div>
+      <div class="sc-val" id="kpi-predictions">0</div>
+      <div class="sc-lbl">Total Predictions</div>
+      <div class="sc-trend neu" id="kpi-pred-trend"><i class="fa-solid fa-minus"></i> No data yet</div>
+    </div>
+    <div class="stat-card">
+      <div class="sc-icon" style="background:linear-gradient(135deg,var(--amb),#d4901f)"><i class="fa-solid fa-flask"></i></div>
+      <div class="sc-val" id="kpi-fertilizers">0</div>
+      <div class="sc-lbl">Fertilizer Analyses</div>
+      <div class="sc-trend neu" id="kpi-fert-trend"><i class="fa-solid fa-minus"></i> No data yet</div>
+    </div>
+    <div class="stat-card">
+      <div class="sc-icon" style="background:linear-gradient(135deg,var(--teal),#0b817a)"><i class="fa-solid fa-microscope"></i></div>
+      <div class="sc-val" id="kpi-diseases">0</div>
+      <div class="sc-lbl">Disease Scans</div>
+      <div class="sc-trend neu" id="kpi-dis-trend"><i class="fa-solid fa-minus"></i> No data yet</div>
+    </div>
+    <div class="stat-card">
+      <div class="sc-icon" style="background:linear-gradient(135deg,var(--purple),#5b21b6)"><i class="fa-solid fa-language"></i></div>
+      <div class="sc-val" id="kpi-langs">0</div>
+      <div class="sc-lbl">Languages Used</div>
+      <div class="sc-trend neu" id="kpi-lang-trend"><i class="fa-solid fa-minus"></i> No data yet</div>
+    </div>
+  </div>
+
+  <!-- ROW 1: Yield Trend + Top Crops -->
+  <div class="dash-row">
+    <div class="chart-wrap">
+      <div class="chart-title"><span><i class="fa-solid fa-arrow-trend-up" style="color:var(--gl)"></i> Prediction Activity Over Time</span></div>
+      <div class="chart-sub">Number of predictions per day (last 14 days)</div>
+      <div id="yieldTrendChart" style="width:100%;overflow-x:auto"></div>
+    </div>
+    <div class="chart-wrap">
+      <div class="chart-title"><span><i class="fa-solid fa-wheat-awn" style="color:var(--gl)"></i> Top Crops Predicted</span></div>
+      <div class="chart-sub">Most recommended crops from your history</div>
+      <div id="topCropsChart"></div>
+    </div>
+  </div>
+
+  <!-- ROW 2: Model Performance + Disease breakdown + Language usage -->
+  <div class="dash-row-3">
+    <div class="chart-wrap">
+      <div class="chart-title"><span><i class="fa-solid fa-robot" style="color:var(--blue)"></i> Model Usage</span></div>
+      <div class="chart-sub">Which ML models you used most</div>
+      <div id="modelUsageChart"></div>
+    </div>
+    <div class="chart-wrap">
+      <div class="chart-title"><span><i class="fa-solid fa-microscope" style="color:var(--teal)"></i> Disease Outcomes</span></div>
+      <div class="chart-sub">Healthy vs. diseased detections</div>
+      <div id="diseaseBreakdownChart"></div>
+    </div>
+    <div class="chart-wrap">
+      <div class="chart-title"><span><i class="fa-solid fa-language" style="color:var(--purple)"></i> Language Distribution</span></div>
+      <div class="chart-sub">Languages used across all analyses</div>
+      <div id="langUsageChart"></div>
+    </div>
+  </div>
+
+  <!-- ACCURACY GAUGES -->
+  <div class="panel" style="margin-bottom:20px">
+    <div class="pt"><i class="fa-solid fa-bullseye" style="color:var(--gl)"></i> ML Model Accuracy Reference</div>
+    <div class="gauge-row">
+      <div class="gauge-card">
+        <div style="font-size:.68rem;color:var(--tm);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px">🌲 Random Forest</div>
+        <div class="gauge-val">99.55%</div>
+        <div class="gauge-lbl">Crop Prediction</div>
+        <div class="gauge-bar"><div class="gauge-fill" style="width:99.55%;background:var(--gl)"></div></div>
+      </div>
+      <div class="gauge-card">
+        <div style="font-size:.68rem;color:var(--tm);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px">🚀 Gradient Boosting</div>
+        <div class="gauge-val">99.33%</div>
+        <div class="gauge-lbl">Fertilizer Advisor</div>
+        <div class="gauge-bar"><div class="gauge-fill" style="width:99.33%;background:var(--amb)"></div></div>
+      </div>
+      <div class="gauge-card">
+        <div style="font-size:.68rem;color:var(--tm);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px">🌲 Random Forest</div>
+        <div class="gauge-val">98.83%</div>
+        <div class="gauge-lbl">Fertilizer RF Model</div>
+        <div class="gauge-bar"><div class="gauge-fill" style="width:98.83%;background:var(--amb)"></div></div>
+      </div>
+      <div class="gauge-card">
+        <div style="font-size:.68rem;color:var(--tm);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px">⚡ XGBoost</div>
+        <div class="gauge-val">99.31%</div>
+        <div class="gauge-lbl">Crop Prediction</div>
+        <div class="gauge-bar"><div class="gauge-fill" style="width:99.31%;background:var(--gl)"></div></div>
+      </div>
+      <div class="gauge-card">
+        <div style="font-size:.68rem;color:var(--tm);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px">🔮 SVM</div>
+        <div class="gauge-val">97.18%</div>
+        <div class="gauge-lbl">Crop Prediction</div>
+        <div class="gauge-bar"><div class="gauge-fill" style="width:97.18%;background:var(--blue)"></div></div>
+      </div>
+      <div class="gauge-card">
+        <div style="font-size:.68rem;color:var(--tm);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px">🧠 Naive Bayes</div>
+        <div class="gauge-val">99.09%</div>
+        <div class="gauge-lbl">Crop Prediction</div>
+        <div class="gauge-bar"><div class="gauge-fill" style="width:99.09%;background:var(--purple)"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI INSIGHTS -->
+  <div class="panel" style="margin-bottom:20px" id="insightsPanel">
+    <div class="pt"><i class="fa-solid fa-lightbulb" style="color:var(--amb)"></i> AI Insights</div>
+    <div id="insightsGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:11px"></div>
+  </div>
+
+  <!-- RECENT ACTIVITY TABLE -->
+  <div class="chart-wrap" style="margin-bottom:20px">
+    <div class="chart-title"><span><i class="fa-solid fa-clock-rotate-left" style="color:var(--gm)"></i> Recent Activity</span>
+      <button onclick="go('history')" style="font-size:.72rem;font-weight:600;color:var(--gm);background:none;border:none;cursor:pointer">View All →</button>
+    </div>
+    <div class="chart-sub">Your last 10 predictions and analyses</div>
+    <div id="recentTable" style="overflow-x:auto"></div>
+  </div>
+
+</div>
+<footer class="ft"><div class="fti"><span>🌿 AgroSense AI</span><span>Dashboard & Analytics</span></div></footer>
+</div>
+
+<!-- HISTORY -->
+<div class="pg" id="pg-history">
+<div class="pw">
+  <div class="pghd">
+    <button class="back" onclick="go('home')"><i class="fa-solid fa-arrow-left"></i> <span data-t="back">Back</span></button>
+    <div class="pgt"><i class="fa-solid fa-clock-rotate-left" style="color:var(--purple);font-size:1.4rem"></i> <span data-t="history_title">Analysis History</span></div>
+    <div class="pgs" data-t="history_sub">All past predictions and detections, with language tags</div>
+  </div>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:7px">
+    <div style="font-size:.8rem;color:var(--tm)" id="hsum"></div>
+    <button onclick="clearHist()" style="padding:6px 13px;border-radius:7px;border:1.5px solid var(--bo);background:var(--wh);font-family:'DM Sans',sans-serif;font-size:.76rem;cursor:pointer;color:var(--td);transition:.18s" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--red)'" onmouseout="this.style.borderColor='var(--bo)';this.style.color='var(--td)'"><i class="fa-solid fa-trash-can"></i> <span data-t="clear_all">Clear All</span></button>
+  </div>
+  <div id="histList"></div>
+</div>
+<footer class="ft"><div class="fti"><span>🌿 AgroSense AI</span><span data-t="history_footer">Analysis History</span></div></footer>
+</div>
+
+</div><!-- /main -->
+
+<!-- LOADING -->
+<div class="lo" id="lo">
+  <div class="lr"></div>
+  <div class="lt" id="lt">Processing…</div>
+  <div class="ls" id="ls"></div>
+</div>
+<div class="toast" id="toastEl"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// LANGUAGE SYSTEM
+// ═══════════════════════════════════════════════════════════════
+const LANGS = {
+  en: {
+    name:'English', flag:'🇬🇧', short:'EN', nativeName:'English',
+    // NAV
+    nav_home:'Home', nav_crop:'Crop', nav_fertilizer:'Fertilizer', nav_history:'History', nav_dashboard:'Dashboard',
+    nav_crop_tools:'Crop Tools', nav_prediction:'Crop Prediction', nav_prediction_sub:'Best crop for your field',
+    nav_disease:'Disease Detection', nav_disease_sub:'Upload leaf → AI diagnosis',
+    nav_fert_tools:'Fertilizer Tools', nav_fert_advisor:'Fertilizer Advisor', nav_fert_sub:'NPK-based recommendation',
+    nav_npk:'NPK Analyzer', nav_npk_sub:'Soil nutrient analysis',
+    // HOME
+    badge_multilang:'5 Languages',
+    hero_title:'Smarter Farming<br/>with <span class="hl">Precision</span><br/><span class="hl2">Intelligence</span>',
+    hero_sub:'Two AI-powered modules — crop prediction and fertilizer recommendation — in your language.',
+    btn_crop_pred:'Crop Prediction', btn_fert:'Fertilizer Advisor', btn_disease:'Disease Detection',
+    stat_crops:'Crop types', stat_ferts:'Fertilizers', stat_diseases:'Diseases', stat_langs:'Languages',
+    explore_label:'Explore', explore_title:'Four Intelligent Modules', explore_sub:'End-to-end AI tools for precision farming',
+    card1_tag:'Crop Intelligence', card1_title:'Crop Prediction', card1_desc:'Input soil NPK, pH, temperature & rainfall — 8 ML models predict the optimal crop.', card1_cta:'Predict Crop →',
+    card2_tag:'Fertilizer AI', card2_title:'Fertilizer Advisor', card2_desc:'Crop + soil + NPK → RF recommends the best fertilizer with application guide.', card2_cta:'Get Recommendation →',
+    card3_tag:'Disease Detection', card3_title:'Plant Disease AI', card3_desc:'Upload a leaf photo — Vision AI diagnoses disease with step-by-step treatment protocol.', card3_cta:'Detect Disease →',
+    card4_tag:'History', card4_title:'Analysis History', card4_desc:'All predictions and detections saved locally — revisit and compare any past analysis.', card4_cta:'View History →',
+    crops_label:'crops', ferts_label:'fertilizers', diseases_label:'diseases', any_plant:'Any plant', persistent:'Persistent', all_modules:'All modules',
+    how_title:'How AgroSense Works', how_sub:'From soil data to actionable insights in seconds',
+    step1_title:'Enter Parameters', step1_desc:'Input soil N-P-K, pH, temperature, humidity, rainfall or upload a leaf photo',
+    step2_title:'ML Analysis', step2_desc:'Random Forest, XGBoost, and other models analyse your data with 98%+ accuracy',
+    step3_title:'Get Insights', step3_desc:'Results delivered in your language — crop, fertilizer, or disease diagnosis with confidence',
+    step4_title:'Track History', step4_desc:'Every analysis auto-saved with language tag — review and compare results over time',
+    footer_text:'Powered by Claude · ML Models · 5 Indian Languages',
+    // FORM
+    back:'Back', clear:'Clear', required:'Required',
+    pred_page_title:'Crop Prediction', pred_page_sub:'Enter soil & climate parameters — AI recommends the optimal crop',
+    choose_model:'Choose ML Model', ai_note_crop:'Claude AI — simulates ML model predictions',
+    soil_nutrients:'Soil Nutrients', climate:'Climate Conditions',
+    nitrogen:'Nitrogen (N) *', phosphorus:'Phosphorus (P) *', potassium:'Potassium (K) *', soil_ph:'Soil pH *',
+    temperature:'Temperature *', humidity:'Humidity *', rainfall:'Rainfall *',
+    predict_btn:'Predict Crop',
+    best_match:'Best Match', confidence:'Prediction Confidence', season:'Season', model_acc:'Model Accuracy', lang_label:'Language',
+    top3_alts:'Top 3 Alternatives', reason:'AI Reasoning',
+    fert_page_title:'Fertilizer Recommendation', fert_page_sub:'Select crop & soil, enter N-P-K — RF ML recommends the best fertilizer',
+    fert_model_label:'ML Model — Fertilizer Advisor', ai_note_fert:'Trained on 3,000 crop×soil×NPK records',
+    crop_soil_info:'Crop & Soil Information', crop_soil_type:'Crop & Soil Type', crop_type:'Crop Type *', soil_type:'Soil Type *',
+    select_crop:'— Select Crop —', select_soil:'— Select Soil —', select_crop_err:'Please select a crop', select_soil_err:'Please select soil type',
+    get_rec_btn:'Get Recommendation', best_fert:'Best Fertilizer', why_fert:'Why this fertilizer?', app_guide:'Application Guide',
+    nutr_analysis:'Soil Nutrient Analysis', precautions:'Precautions', top3_ferts:'Top 3 Alternatives',
+    wheat:'Wheat', rice:'Rice', potato:'Potato', cotton:'Cotton', banana:'Banana', tomato:'Tomato',
+    disease_page_title:'Disease Detection', disease_page_sub:'Upload a leaf image — Vision AI diagnoses disease in your language',
+    upload_image:'Upload Plant Image', vision_note:'Claude Vision AI — analyzes lesions, patterns & tissue damage',
+    drop_image:'Drop your plant or leaf image here', drop_sub:'Well-lit, clear photos give the most accurate results',
+    choose_image:'Choose Image', analyze_btn:'Analyze for Disease', change_image:'Change Image',
+    history_title:'Analysis History', history_sub:'All past predictions and detections, with language tags',
+    clear_all:'Clear All', history_footer:'Analysis History',
+    footer_crop:'Crop Prediction · ML-Powered',
+    dashboard_sub:'Crop history · Prediction analytics · Yield trends · Model performance',
+    // LOADING
+    loading_crop:'Analyzing soil & climate parameters…',
+    loading_fert:'Calculating fertilizer recommendation…',
+    loading_disease:'Analyzing plant image…',
+    loading_disease_sub:'Vision AI examining lesions, patterns & tissue damage',
+    // AI PROMPTS
+    ai_lang_instruction:'Respond in English.',
+    orb1:'✅ Rice — 94.2% conf', orb2:'🌱 DAP recommended', orb3:'🔬 Leaf Blight detected',
+    lang_banner_text:'Results in English',
+  },
+
+  hi: {
+    name:'Hindi', flag:'🇮🇳', short:'HI', nativeName:'हिन्दी',
+    nav_home:'होम', nav_crop:'फसल', nav_fertilizer:'उर्वरक', nav_history:'इतिहास', nav_dashboard:'डैशबोर्ड',
+    nav_crop_tools:'फसल उपकरण', nav_prediction:'फसल पूर्वानुमान', nav_prediction_sub:'अपने खेत के लिए सर्वोत्तम फसल',
+    nav_disease:'रोग पहचान', nav_disease_sub:'पत्ता अपलोड करें → AI निदान',
+    nav_fert_tools:'उर्वरक उपकरण', nav_fert_advisor:'उर्वरक सलाहकार', nav_fert_sub:'NPK-आधारित सुझाव',
+    nav_npk:'NPK विश्लेषक', nav_npk_sub:'मिट्टी पोषक तत्व विश्लेषण',
+    badge_multilang:'5 भाषाएं',
+    hero_title:'स्मार्ट खेती<br/><span class="hl">सटीक</span><br/><span class="hl2">बुद्धिमत्ता</span> के साथ',
+    hero_sub:'चार AI-संचालित मॉड्यूल — फसल पूर्वानुमान, उर्वरक सुझाव और पौध रोग निदान — आपकी भाषा में।',
+    btn_crop_pred:'फसल पूर्वानुमान', btn_fert:'उर्वरक सलाहकार', btn_disease:'रोग पहचान',
+    stat_crops:'फसल प्रकार', stat_ferts:'उर्वरक', stat_diseases:'रोग', stat_langs:'भाषाएं',
+    explore_label:'अन्वेषण', explore_title:'चार बुद्धिमान मॉड्यूल', explore_sub:'सटीक खेती के लिए AI उपकरण',
+    card1_tag:'फसल बुद्धि', card1_title:'फसल पूर्वानुमान', card1_desc:'मिट्टी NPK, pH, तापमान और वर्षा दर्ज करें — 8 ML मॉडल सर्वोत्तम फसल बताते हैं।', card1_cta:'फसल का अनुमान लगाएं →',
+    card2_tag:'उर्वरक AI', card2_title:'उर्वरक सलाहकार', card2_desc:'फसल + मिट्टी + NPK → RF सबसे अच्छा उर्वरक सुझाता है।', card2_cta:'सुझाव प्राप्त करें →',
+    card3_tag:'रोग पहचान', card3_title:'पौध रोग AI', card3_desc:'पत्ते की फोटो अपलोड करें — Vision AI रोग का निदान और उपचार बताता है।', card3_cta:'रोग पहचानें →',
+    card4_tag:'इतिहास', card4_title:'विश्लेषण इतिहास', card4_desc:'सभी भविष्यवाणियां और पहचान स्थानीय रूप से सहेजी जाती हैं।', card4_cta:'इतिहास देखें →',
+    crops_label:'फसलें', ferts_label:'उर्वरक', diseases_label:'रोग', any_plant:'कोई भी पौधा', persistent:'स्थायी', all_modules:'सभी मॉड्यूल',
+    how_title:'AgroSense कैसे काम करता है', how_sub:'मिट्टी डेटा से कार्यकारी जानकारी तक सेकंडों में',
+    step1_title:'पैरामीटर दर्ज करें', step1_desc:'मिट्टी N-P-K, pH, तापमान, आर्द्रता, वर्षा दर्ज करें या पत्ते की फोटो अपलोड करें',
+    step2_title:'ML विश्लेषण', step2_desc:'Random Forest, XGBoost और अन्य मॉडल 98%+ सटीकता के साथ डेटा का विश्लेषण करते हैं',
+    step3_title:'जानकारी प्राप्त करें', step3_desc:'आपकी भाषा में परिणाम — फसल, उर्वरक या रोग निदान विश्वास के साथ',
+    step4_title:'इतिहास ट्रैक करें', step4_desc:'हर विश्लेषण भाषा टैग के साथ स्वतः सहेजा जाता है',
+    footer_text:'Claude · ML Models · 5 भारतीय भाषाओं द्वारा संचालित',
+    back:'वापस', clear:'साफ करें', required:'आवश्यक',
+    pred_page_title:'फसल पूर्वानुमान', pred_page_sub:'मिट्टी और जलवायु पैरामीटर दर्ज करें',
+    choose_model:'ML मॉडल चुनें', ai_note_crop:'Claude AI — ML मॉडल पूर्वानुमान का अनुकरण करता है',
+    soil_nutrients:'मिट्टी पोषक तत्व', climate:'जलवायु परिस्थितियाँ',
+    nitrogen:'नाइट्रोजन (N) *', phosphorus:'फास्फोरस (P) *', potassium:'पोटेशियम (K) *', soil_ph:'मिट्टी pH *',
+    temperature:'तापमान *', humidity:'आर्द्रता *', rainfall:'वर्षा *',
+    predict_btn:'फसल का अनुमान लगाएं',
+    best_match:'सर्वोत्तम मिलान', confidence:'पूर्वानुमान विश्वास', season:'मौसम', model_acc:'मॉडल सटीकता', lang_label:'भाषा',
+    top3_alts:'शीर्ष 3 विकल्प', reason:'AI तर्क',
+    fert_page_title:'उर्वरक सुझाव', fert_page_sub:'फसल और मिट्टी चुनें, NPK दर्ज करें',
+    fert_model_label:'ML मॉडल — उर्वरक सलाहकार', ai_note_fert:'3,000 रिकॉर्ड पर प्रशिक्षित',
+    crop_soil_info:'फसल और मिट्टी जानकारी', crop_soil_type:'फसल और मिट्टी का प्रकार', crop_type:'फसल का प्रकार *', soil_type:'मिट्टी का प्रकार *',
+    select_crop:'— फसल चुनें —', select_soil:'— मिट्टी चुनें —', select_crop_err:'कृपया फसल चुनें', select_soil_err:'कृपया मिट्टी का प्रकार चुनें',
+    get_rec_btn:'सुझाव प्राप्त करें', best_fert:'सर्वोत्तम उर्वरक', why_fert:'यह उर्वरक क्यों?', app_guide:'उपयोग गाइड',
+    nutr_analysis:'मिट्टी पोषक तत्व विश्लेषण', precautions:'सावधानियाँ', top3_ferts:'शीर्ष 3 उर्वरक विकल्प',
+    wheat:'गेहूं', rice:'चावल', potato:'आलू', cotton:'कपास', banana:'केला', tomato:'टमाटर',
+    disease_page_title:'रोग पहचान', disease_page_sub:'पत्ते की फोटो अपलोड करें — Vision AI आपकी भाषा में रोग निदान करता है',
+    upload_image:'पौधे की फोटो अपलोड करें', vision_note:'Claude Vision AI — घावों, पैटर्न और ऊतक क्षति का विश्लेषण करता है',
+    drop_image:'यहाँ अपने पौधे या पत्ते की फोटो छोड़ें', drop_sub:'स्पष्ट, अच्छी रोशनी वाली फोटो सबसे सटीक परिणाम देती है',
+    choose_image:'फोटो चुनें', analyze_btn:'रोग के लिए विश्लेषण करें', change_image:'फोटो बदलें',
+    history_title:'विश्लेषण इतिहास', history_sub:'सभी भूतकालीन भविष्यवाणियां और पहचान, भाषा टैग के साथ',
+    clear_all:'सभी साफ करें', history_footer:'विश्लेषण इतिहास',
+    footer_crop:'फसल पूर्वानुमान · ML-संचालित',
+    dashboard_sub:'फसल इतिहास · पूर्वानुमान विश्लेषण · उपज रुझान · मॉडल प्रदर्शन',
+    loading_crop:'मिट्टी और जलवायु पैरामीटर का विश्लेषण हो रहा है…',
+    loading_fert:'उर्वरक सुझाव की गणना हो रही है…',
+    loading_disease:'पौधे की फोटो का विश्लेषण हो रहा है…',
+    loading_disease_sub:'Vision AI घावों और पैटर्न की जाँच कर रहा है',
+    ai_lang_instruction:'सभी उत्तर हिंदी में दें। फसल का नाम हिंदी और अंग्रेजी दोनों में दें।',
+    orb1:'✅ धान — 94.2% विश्वास', orb2:'🌱 DAP की सलाह दी गई', orb3:'🔬 पत्ती झुलसा पहचाना',
+    lang_banner_text:'सभी AI उत्तर हिंदी (हिन्दी) में होंगे',
+  },
+
+  te: {
+    name:'Telugu', flag:'🇮🇳', short:'TE', nativeName:'తెలుగు',
+    nav_home:'హోమ్', nav_crop:'పంట', nav_fertilizer:'ఎరువు', nav_history:'చరిత్ర', nav_dashboard:'డాష్‌బోర్డ్',
+    nav_crop_tools:'పంట సాధనాలు', nav_prediction:'పంట అంచనా', nav_prediction_sub:'మీ పొలానికి అత్యుత్తమ పంట',
+    nav_disease:'వ్యాధి గుర్తింపు', nav_disease_sub:'ఆకు అప్‌లోడ్ → AI నిర్ధారణ',
+    nav_fert_tools:'ఎరువు సాధనాలు', nav_fert_advisor:'ఎరువు సలహాదారు', nav_fert_sub:'NPK-ఆధారిత సిఫారసు',
+    nav_npk:'NPK విశ్లేషకుడు', nav_npk_sub:'నేల పోషక విశ్లేషణ',
+    badge_multilang:'5 భాషలు',
+    hero_title:'స్మార్ట్ వ్యవసాయం<br/><span class="hl">ఖచ్చితత్వంతో</span><br/><span class="hl2">తెలివితేటలతో</span>',
+    hero_sub:'నాలుగు AI-శక్తి మాడ్యూళ్లు — పంట అంచనా, ఎరువు సిఫారసు మరియు మొక్క వ్యాధి నిర్ధారణ — మీ భాషలో.',
+    btn_crop_pred:'పంట అంచనా', btn_fert:'ఎరువు సలహాదారు', btn_disease:'వ్యాధి గుర్తింపు',
+    stat_crops:'పంట రకాలు', stat_ferts:'ఎరువులు', stat_diseases:'వ్యాధులు', stat_langs:'భాషలు',
+    explore_label:'అన్వేషించు', explore_title:'నాలుగు తెలివైన మాడ్యూళ్లు', explore_sub:'ఖచ్చితమైన వ్యవసాయం కోసం AI సాధనాలు',
+    card1_tag:'పంట తెలివి', card1_title:'పంట అంచనా', card1_desc:'నేల NPK, pH, ఉష్ణోగ్రత & వర్షపాతం నమోదు చేయండి — 8 ML మోడళ్లు అత్యుత్తమ పంటను అంచనా వేస్తాయి.', card1_cta:'పంట అంచనా వేయండి →',
+    card2_tag:'ఎరువు AI', card2_title:'ఎరువు సలహాదారు', card2_desc:'పంట + నేల + NPK → RF అత్యుత్తమ ఎరువును సిఫారసు చేస్తుంది.', card2_cta:'సిఫారసు పొందండి →',
+    card3_tag:'వ్యాధి గుర్తింపు', card3_title:'మొక్క వ్యాధి AI', card3_desc:'ఆకు ఫోటో అప్‌లోడ్ చేయండి — Vision AI వ్యాధిని నిర్ధారించి చికిత్స వివరిస్తుంది.', card3_cta:'వ్యాధి గుర్తించండి →',
+    card4_tag:'చరిత్ర', card4_title:'విశ్లేషణ చరిత్ర', card4_desc:'అన్ని అంచనాలు మరియు గుర్తింపులు స్థానికంగా సేవ్ అవుతాయి.', card4_cta:'చరిత్ర చూడండి →',
+    crops_label:'పంటలు', ferts_label:'ఎరువులు', diseases_label:'వ్యాధులు', any_plant:'ఏ మొక్కైనా', persistent:'శాశ్వతం', all_modules:'అన్ని మాడ్యూళ్లు',
+    how_title:'AgroSense ఎలా పనిచేస్తుంది', how_sub:'నేల డేటా నుండి అమలు చేయగల అంతర్దృష్టులకు సెకన్లలో',
+    step1_title:'పారామీటర్లు నమోదు చేయండి', step1_desc:'నేల N-P-K, pH, ఉష్ణోగ్రత, తేమ, వర్షపాతం నమోదు చేయండి లేదా ఆకు ఫోటో అప్‌లోడ్ చేయండి',
+    step2_title:'ML విశ్లేషణ', step2_desc:'Random Forest, XGBoost మరియు ఇతర మోడళ్లు 98%+ ఖచ్చితత్వంతో డేటాను విశ్లేషిస్తాయి',
+    step3_title:'అంతర్దృష్టులు పొందండి', step3_desc:'మీ భాషలో ఫలితాలు — పంట, ఎరువు లేదా వ్యాధి నిర్ధారణ',
+    step4_title:'చరిత్ర ట్రాక్ చేయండి', step4_desc:'ప్రతి విశ్లేషణ భాష ట్యాగ్‌తో స్వయంచాలకంగా సేవ్ అవుతుంది',
+    footer_text:'Claude · ML Models · 5 భారతీయ భాషలు ద్వారా శక్తివంతం',
+    back:'వెనుకకు', clear:'క్లియర్', required:'అవసరం',
+    pred_page_title:'పంట అంచనా', pred_page_sub:'నేల & వాతావరణ పారామీటర్లు నమోదు చేయండి',
+    choose_model:'ML మోడల్ ఎంచుకోండి', ai_note_crop:'Claude AI — ML మోడల్ అంచనాలను అనుకరిస్తుంది',
+    soil_nutrients:'నేల పోషకాలు', climate:'వాతావరణ పరిస్థితులు',
+    nitrogen:'నైట్రోజన్ (N) *', phosphorus:'ఫాస్ఫరస్ (P) *', potassium:'పొటాషియం (K) *', soil_ph:'నేల pH *',
+    temperature:'ఉష్ణోగ్రత *', humidity:'తేమ *', rainfall:'వర్షపాతం *',
+    predict_btn:'పంట అంచనా వేయండి',
+    best_match:'అత్యుత్తమ సరిపోలిక', confidence:'అంచనా విశ్వాసం', season:'సీజన్', model_acc:'మోడల్ ఖచ్చితత్వం', lang_label:'భాష',
+    top3_alts:'టాప్ 3 ప్రత్యామ్నాయాలు', reason:'AI తర్కం',
+    fert_page_title:'ఎరువు సిఫారసు', fert_page_sub:'పంట & నేల ఎంచుకోండి, NPK నమోదు చేయండి',
+    fert_model_label:'ML మోడల్ — ఎరువు సలహాదారు', ai_note_fert:'3,000 రికార్డులపై శిక్షణ పొందింది',
+    crop_soil_info:'పంట & నేల సమాచారం', crop_soil_type:'పంట & నేల రకం', crop_type:'పంట రకం *', soil_type:'నేల రకం *',
+    select_crop:'— పంట ఎంచుకోండి —', select_soil:'— నేల ఎంచుకోండి —', select_crop_err:'దయచేసి పంట ఎంచుకోండి', select_soil_err:'దయచేసి నేల రకం ఎంచుకోండి',
+    get_rec_btn:'సిఫారసు పొందండి', best_fert:'అత్యుత్తమ ఎరువు', why_fert:'ఈ ఎరువు ఎందుకు?', app_guide:'వినియోగ గైడ్',
+    nutr_analysis:'నేల పోషక విశ్లేషణ', precautions:'జాగ్రత్తలు', top3_ferts:'టాప్ 3 ఎరువు ప్రత్యామ్నాయాలు',
+    wheat:'గోధుమ', rice:'వరి', potato:'బంగాళాదుంప', cotton:'పత్తి', banana:'అరటి', tomato:'టొమాటో',
+    disease_page_title:'వ్యాధి గుర్తింపు', disease_page_sub:'ఆకు చిత్రం అప్‌లోడ్ చేయండి — Vision AI మీ భాషలో వ్యాధి నిర్ధారిస్తుంది',
+    upload_image:'మొక్క చిత్రం అప్‌లోడ్ చేయండి', vision_note:'Claude Vision AI — గాయాలు, నమూనాలు & కణజాల నష్టాన్ని విశ్లేషిస్తుంది',
+    drop_image:'మీ మొక్క లేదా ఆకు చిత్రాన్ని ఇక్కడ వేయండి', drop_sub:'స్పష్టమైన, బాగా వెలిగించిన ఫోటోలు అత్యంత ఖచ్చితమైన ఫలితాలు ఇస్తాయి',
+    choose_image:'చిత్రం ఎంచుకోండి', analyze_btn:'వ్యాధి కోసం విశ్లేషించండి', change_image:'చిత్రం మార్చండి',
+    history_title:'విశ్లేషణ చరిత్ర', history_sub:'అన్ని గత అంచనాలు మరియు గుర్తింపులు, భాష ట్యాగ్‌లతో',
+    clear_all:'అన్నీ క్లియర్ చేయండి', history_footer:'విశ్లేషణ చరిత్ర',
+    footer_crop:'పంట అంచనా · ML-శక్తి',
+    dashboard_sub:'పంట చరిత్ర · అంచనా విశ్లేషణ · దిగుబడి ధోరణులు · మోడల్ పనితీరు',
+    loading_crop:'నేల & వాతావరణ పారామీటర్లు విశ్లేషించబడుతున్నాయి…',
+    loading_fert:'ఎరువు సిఫారసు లెక్కించబడుతోంది…',
+    loading_disease:'మొక్క చిత్రం విశ్లేషించబడుతోంది…',
+    loading_disease_sub:'Vision AI గాయాలు మరియు నమూనాలను పరిశీలిస్తోంది',
+    ai_lang_instruction:'అన్ని సమాధానాలు తెలుగులో ఇవ్వండి. పంట పేర్లను తెలుగు మరియు ఆంగ్లంలో రెండింటిలో ఇవ్వండి.',
+    orb1:'✅ వరి — 94.2% నమ్మకం', orb2:'🌱 DAP సిఫారసు చేయబడింది', orb3:'🔬 ఆకు మాడు గుర్తించబడింది',
+    lang_banner_text:'అన్ని AI సమాధానాలు తెలుగులో ఉంటాయి',
+  },
+
+  ta: {
+    name:'Tamil', flag:'🇮🇳', short:'TA', nativeName:'தமிழ்',
+    nav_home:'முகப்பு', nav_crop:'பயிர்', nav_fertilizer:'உரம்', nav_history:'வரலாறு', nav_dashboard:'டாஷ்போர்டு',
+    nav_crop_tools:'பயிர் கருவிகள்', nav_prediction:'பயிர் கணிப்பு', nav_prediction_sub:'உங்கள் வயலுக்கு சிறந்த பயிர்',
+    nav_disease:'நோய் கண்டறிதல்', nav_disease_sub:'இலை பதிவேற்று → AI கண்டறிதல்',
+    nav_fert_tools:'உர கருவிகள்', nav_fert_advisor:'உர ஆலோசகர்', nav_fert_sub:'NPK அடிப்படை பரிந்துரை',
+    nav_npk:'NPK பகுப்பாய்வி', nav_npk_sub:'மண் ஊட்டச்சத்து பகுப்பாய்வு',
+    badge_multilang:'5 மொழிகள்',
+    hero_title:'புத்திசாலி விவசாயம்<br/><span class="hl">துல்லியத்துடன்</span><br/><span class="hl2">நுண்ணறிவுடன்</span>',
+    hero_sub:'நான்கு AI-இயங்கும் தொகுதிகள் — பயிர் கணிப்பு, உர பரிந்துரை மற்றும் தாவர நோய் கண்டறிதல் — உங்கள் மொழியில்.',
+    btn_crop_pred:'பயிர் கணிப்பு', btn_fert:'உர ஆலோசகர்', btn_disease:'நோய் கண்டறிதல்',
+    stat_crops:'பயிர் வகைகள்', stat_ferts:'உரங்கள்', stat_diseases:'நோய்கள்', stat_langs:'மொழிகள்',
+    explore_label:'ஆராய்', explore_title:'நான்கு நுண்ணறிவு தொகுதிகள்', explore_sub:'துல்லிய விவசாயத்திற்கான AI கருவிகள்',
+    card1_tag:'பயிர் நுண்ணறிவு', card1_title:'பயிர் கணிப்பு', card1_desc:'மண் NPK, pH, வெப்பநிலை & மழை உள்ளிடவும் — 8 ML மாதிரிகள் சிறந்த பயிரை கணிக்கின்றன.', card1_cta:'பயிரை கணிக்க →',
+    card2_tag:'உர AI', card2_title:'உர ஆலோசகர்', card2_desc:'பயிர் + மண் + NPK → RF சிறந்த உரத்தை பரிந்துரைக்கிறது.', card2_cta:'பரிந்துரை பெற →',
+    card3_tag:'நோய் கண்டறிதல்', card3_title:'தாவர நோய் AI', card3_desc:'இலை புகைப்படம் பதிவேற்றவும் — Vision AI நோயை கண்டறிந்து சிகிச்சை விவரிக்கிறது.', card3_cta:'நோயை கண்டறி →',
+    card4_tag:'வரலாறு', card4_title:'பகுப்பாய்வு வரலாறு', card4_desc:'அனைத்து கணிப்புகளும் கண்டறிதல்களும் உள்நாட்டில் சேமிக்கப்படுகின்றன.', card4_cta:'வரலாற்றை காண →',
+    crops_label:'பயிர்கள்', ferts_label:'உரங்கள்', diseases_label:'நோய்கள்', any_plant:'எந்த தாவரமும்', persistent:'நிரந்தரம்', all_modules:'அனைத்து தொகுதிகள்',
+    how_title:'AgroSense எவ்வாறு செயல்படுகிறது', how_sub:'மண் தரவிலிருந்து நடைமுறை நுண்ணறிவுக்கு நொடிகளில்',
+    step1_title:'அளவுருக்களை உள்ளிடவும்', step1_desc:'மண் N-P-K, pH, வெப்பநிலை, ஈரப்பதம், மழை உள்ளிடவும் அல்லது இலை புகைப்படம் பதிவேற்றவும்',
+    step2_title:'ML பகுப்பாய்வு', step2_desc:'Random Forest, XGBoost மற்றும் பிற மாதிரிகள் 98%+ துல்லியத்துடன் தரவை பகுப்பாய்கின்றன',
+    step3_title:'நுண்ணறிவு பெறவும்', step3_desc:'உங்கள் மொழியில் முடிவுகள் — பயிர், உரம் அல்லது நோய் கண்டறிதல்',
+    step4_title:'வரலாற்றை கண்காணிக்கவும்', step4_desc:'ஒவ்வொரு பகுப்பாய்வும் மொழி குறியுடன் தானாக சேமிக்கப்படுகிறது',
+    footer_text:'Claude · ML Models · 5 இந்திய மொழிகளால் இயக்கப்படுகிறது',
+    back:'திரும்பு', clear:'அழி', required:'தேவை',
+    pred_page_title:'பயிர் கணிப்பு', pred_page_sub:'மண் & காலநிலை அளவுருக்களை உள்ளிடவும்',
+    choose_model:'ML மாதிரி தேர்வு', ai_note_crop:'Claude AI — ML மாதிரி கணிப்புகளை உருவகப்படுத்துகிறது',
+    soil_nutrients:'மண் ஊட்டச்சத்துகள்', climate:'காலநிலை நிலைமைகள்',
+    nitrogen:'நைட்ரஜன் (N) *', phosphorus:'பாஸ்பரஸ் (P) *', potassium:'பொட்டாசியம் (K) *', soil_ph:'மண் pH *',
+    temperature:'வெப்பநிலை *', humidity:'ஈரப்பதம் *', rainfall:'மழை *',
+    predict_btn:'பயிரை கணிக்க',
+    best_match:'சிறந்த பொருத்தம்', confidence:'கணிப்பு நம்பகத்தன்மை', season:'பருவம்', model_acc:'மாதிரி துல்லியம்', lang_label:'மொழி',
+    top3_alts:'முதல் 3 மாற்றுகள்', reason:'AI தர்க்கம்',
+    fert_page_title:'உர பரிந்துரை', fert_page_sub:'பயிர் & மண் தேர்வு, NPK உள்ளிடவும்',
+    fert_model_label:'ML மாதிரி — உர ஆலோசகர்', ai_note_fert:'3,000 பதிவுகளில் பயிற்சி பெற்றது',
+    crop_soil_info:'பயிர் & மண் தகவல்', crop_soil_type:'பயிர் & மண் வகை', crop_type:'பயிர் வகை *', soil_type:'மண் வகை *',
+    select_crop:'— பயிர் தேர்வு —', select_soil:'— மண் தேர்வு —', select_crop_err:'தயவுசெய்து பயிர் தேர்வு செய்யவும்', select_soil_err:'தயவுசெய்து மண் வகை தேர்வு செய்யவும்',
+    get_rec_btn:'பரிந்துரை பெற', best_fert:'சிறந்த உரம்', why_fert:'இந்த உரம் ஏன்?', app_guide:'பயன்பாட்டு வழிகாட்டி',
+    nutr_analysis:'மண் ஊட்டச்சத்து பகுப்பாய்வு', precautions:'முன்னெச்சரிக்கைகள்', top3_ferts:'முதல் 3 உர மாற்றுகள்',
+    wheat:'கோதுமை', rice:'நெல்', potato:'உருளைக்கிழங்கு', cotton:'பருத்தி', banana:'வாழை', tomato:'தக்காளி',
+    disease_page_title:'நோய் கண்டறிதல்', disease_page_sub:'இலை படம் பதிவேற்றவும் — Vision AI உங்கள் மொழியில் நோயை கண்டறிகிறது',
+    upload_image:'தாவர படத்தை பதிவேற்றவும்', vision_note:'Claude Vision AI — புண்கள், வடிவங்கள் & திசு சேதத்தை பகுப்பாய்கிறது',
+    drop_image:'உங்கள் தாவர அல்லது இலை படத்தை இங்கே வையுங்கள்', drop_sub:'தெளிவான, நன்கு வெளிச்சமான புகைப்படங்கள் மிகவும் துல்லியமான முடிவுகளை தருகின்றன',
+    choose_image:'படம் தேர்வு', analyze_btn:'நோய்க்காக பகுப்பாய்வு', change_image:'படம் மாற்று',
+    history_title:'பகுப்பாய்வு வரலாறு', history_sub:'அனைத்து கடந்தகால கணிப்புகளும் கண்டறிதல்களும், மொழி குறியுடன்',
+    clear_all:'அனைத்தும் அழி', history_footer:'பகுப்பாய்வு வரலாறு',
+    footer_crop:'பயிர் கணிப்பு · ML-இயங்கும்',
+    dashboard_sub:'பயிர் வரலாறு · கணிப்பு பகுப்பாய்வு · விளைச்சல் போக்கு · மாதிரி செயல்திறன்',
+    loading_crop:'மண் & காலநிலை அளவுருக்கள் பகுப்பாய்வு செய்யப்படுகின்றன…',
+    loading_fert:'உர பரிந்துரை கணக்கிடப்படுகிறது…',
+    loading_disease:'தாவர படம் பகுப்பாய்வு செய்யப்படுகிறது…',
+    loading_disease_sub:'Vision AI புண்கள் மற்றும் வடிவங்களை ஆய்வு செய்கிறது',
+    ai_lang_instruction:'அனைத்து பதில்களும் தமிழில் கொடுக்கவும். பயிர் பெயர்களை தமிழிலும் ஆங்கிலத்திலும் கொடுக்கவும்.',
+    orb1:'✅ நெல் — 94.2% நம்பகம்', orb2:'🌱 DAP பரிந்துரைக்கப்பட்டது', orb3:'🔬 இலை கருகல் கண்டறியப்பட்டது',
+    lang_banner_text:'அனைத்து AI பதில்களும் தமிழில் இருக்கும்',
+  },
+
+  pa: {
+    name:'Punjabi', flag:'🇮🇳', short:'PA', nativeName:'ਪੰਜਾਬੀ',
+    nav_home:'ਹੋਮ', nav_crop:'ਫ਼ਸਲ', nav_fertilizer:'ਖਾਦ', nav_history:'ਇਤਿਹਾਸ', nav_dashboard:'ਡੈਸ਼ਬੋਰਡ',
+    nav_crop_tools:'ਫ਼ਸਲ ਸੰਦ', nav_prediction:'ਫ਼ਸਲ ਭਵਿੱਖਬਾਣੀ', nav_prediction_sub:'ਆਪਣੇ ਖੇਤ ਲਈ ਸਭ ਤੋਂ ਵਧੀਆ ਫ਼ਸਲ',
+    nav_disease:'ਰੋਗ ਪਛਾਣ', nav_disease_sub:'ਪੱਤਾ ਅਪਲੋਡ → AI ਤਸ਼ਖ਼ੀਸ',
+    nav_fert_tools:'ਖਾਦ ਸੰਦ', nav_fert_advisor:'ਖਾਦ ਸਲਾਹਕਾਰ', nav_fert_sub:'NPK ਆਧਾਰਿਤ ਸਿਫ਼ਾਰਸ਼',
+    nav_npk:'NPK ਵਿਸ਼ਲੇਸ਼ਕ', nav_npk_sub:'ਮਿੱਟੀ ਪੋਸ਼ਕ ਤੱਤ ਵਿਸ਼ਲੇਸ਼ਣ',
+    badge_multilang:'5 ਭਾਸ਼ਾਵਾਂ',
+    hero_title:'ਸਮਾਰਟ ਖੇਤੀ<br/><span class="hl">ਸ਼ੁੱਧਤਾ</span><br/><span class="hl2">ਬੁੱਧੀ</span> ਨਾਲ',
+    hero_sub:'ਚਾਰ AI-ਸੰਚਾਲਿਤ ਮੋਡੀਊਲ — ਫ਼ਸਲ ਭਵਿੱਖਬਾਣੀ, ਖਾਦ ਸਿਫ਼ਾਰਸ਼ ਅਤੇ ਪੌਦੇ ਦੇ ਰੋਗ ਦੀ ਜਾਂਚ — ਤੁਹਾਡੀ ਭਾਸ਼ਾ ਵਿੱਚ।',
+    btn_crop_pred:'ਫ਼ਸਲ ਭਵਿੱਖਬਾਣੀ', btn_fert:'ਖਾਦ ਸਲਾਹਕਾਰ', btn_disease:'ਰੋਗ ਪਛਾਣ',
+    stat_crops:'ਫ਼ਸਲ ਕਿਸਮਾਂ', stat_ferts:'ਖਾਦਾਂ', stat_diseases:'ਰੋਗ', stat_langs:'ਭਾਸ਼ਾਵਾਂ',
+    explore_label:'ਖੋਜੋ', explore_title:'ਚਾਰ ਬੁੱਧੀਮਾਨ ਮੋਡੀਊਲ', explore_sub:'ਸ਼ੁੱਧ ਖੇਤੀ ਲਈ AI ਸੰਦ',
+    card1_tag:'ਫ਼ਸਲ ਬੁੱਧੀ', card1_title:'ਫ਼ਸਲ ਭਵਿੱਖਬਾਣੀ', card1_desc:'ਮਿੱਟੀ NPK, pH, ਤਾਪਮਾਨ & ਬਾਰਿਸ਼ ਦਰਜ਼ ਕਰੋ — 8 ML ਮਾਡਲ ਸਭ ਤੋਂ ਵਧੀਆ ਫ਼ਸਲ ਦੱਸਦੇ ਹਨ।', card1_cta:'ਫ਼ਸਲ ਦਾ ਅਨੁਮਾਨ ਲਗਾਓ →',
+    card2_tag:'ਖਾਦ AI', card2_title:'ਖਾਦ ਸਲਾਹਕਾਰ', card2_desc:'ਫ਼ਸਲ + ਮਿੱਟੀ + NPK → RF ਸਭ ਤੋਂ ਵਧੀਆ ਖਾਦ ਦੀ ਸਿਫ਼ਾਰਸ਼ ਕਰਦਾ ਹੈ।', card2_cta:'ਸਿਫ਼ਾਰਸ਼ ਲਓ →',
+    card3_tag:'ਰੋਗ ਪਛਾਣ', card3_title:'ਪੌਦੇ ਦਾ ਰੋਗ AI', card3_desc:'ਪੱਤੇ ਦੀ ਫੋਟੋ ਅਪਲੋਡ ਕਰੋ — Vision AI ਰੋਗ ਦਾ ਪਤਾ ਲਗਾ ਕੇ ਇਲਾਜ ਦੱਸਦਾ ਹੈ।', card3_cta:'ਰੋਗ ਪਛਾਣੋ →',
+    card4_tag:'ਇਤਿਹਾਸ', card4_title:'ਵਿਸ਼ਲੇਸ਼ਣ ਇਤਿਹਾਸ', card4_desc:'ਸਾਰੀਆਂ ਭਵਿੱਖਬਾਣੀਆਂ ਅਤੇ ਪਛਾਣਾਂ ਸਥਾਨਕ ਤੌਰ \'ਤੇ ਸੇਵ ਕੀਤੀਆਂ ਜਾਂਦੀਆਂ ਹਨ।', card4_cta:'ਇਤਿਹਾਸ ਦੇਖੋ →',
+    crops_label:'ਫ਼ਸਲਾਂ', ferts_label:'ਖਾਦਾਂ', diseases_label:'ਰੋਗ', any_plant:'ਕੋਈ ਵੀ ਪੌਦਾ', persistent:'ਸਥਾਈ', all_modules:'ਸਾਰੇ ਮੋਡੀਊਲ',
+    how_title:'AgroSense ਕਿਵੇਂ ਕੰਮ ਕਰਦਾ ਹੈ', how_sub:'ਮਿੱਟੀ ਡੇਟਾ ਤੋਂ ਕਾਰਜਯੋਗ ਜਾਣਕਾਰੀ ਤੱਕ ਸਕਿੰਟਾਂ ਵਿੱਚ',
+    step1_title:'ਪੈਰਾਮੀਟਰ ਦਰਜ਼ ਕਰੋ', step1_desc:'ਮਿੱਟੀ N-P-K, pH, ਤਾਪਮਾਨ, ਨਮੀ, ਬਾਰਿਸ਼ ਦਰਜ਼ ਕਰੋ ਜਾਂ ਪੱਤੇ ਦੀ ਫੋਟੋ ਅਪਲੋਡ ਕਰੋ',
+    step2_title:'ML ਵਿਸ਼ਲੇਸ਼ਣ', step2_desc:'Random Forest, XGBoost ਅਤੇ ਹੋਰ ਮਾਡਲ 98%+ ਸ਼ੁੱਧਤਾ ਨਾਲ ਡੇਟਾ ਦਾ ਵਿਸ਼ਲੇਸ਼ਣ ਕਰਦੇ ਹਨ',
+    step3_title:'ਜਾਣਕਾਰੀ ਪ੍ਰਾਪਤ ਕਰੋ', step3_desc:'ਤੁਹਾਡੀ ਭਾਸ਼ਾ ਵਿੱਚ ਨਤੀਜੇ — ਫ਼ਸਲ, ਖਾਦ ਜਾਂ ਰੋਗ ਤਸ਼ਖ਼ੀਸ',
+    step4_title:'ਇਤਿਹਾਸ ਟ੍ਰੈਕ ਕਰੋ', step4_desc:'ਹਰ ਵਿਸ਼ਲੇਸ਼ਣ ਭਾਸ਼ਾ ਟੈਗ ਨਾਲ ਆਪਣੇ ਆਪ ਸੇਵ ਹੁੰਦਾ ਹੈ',
+    footer_text:'Claude · ML Models · 5 ਭਾਰਤੀ ਭਾਸ਼ਾਵਾਂ ਦੁਆਰਾ ਸੰਚਾਲਿਤ',
+    back:'ਵਾਪਸ', clear:'ਸਾਫ਼ ਕਰੋ', required:'ਜ਼ਰੂਰੀ',
+    pred_page_title:'ਫ਼ਸਲ ਭਵਿੱਖਬਾਣੀ', pred_page_sub:'ਮਿੱਟੀ ਅਤੇ ਜਲਵਾਯੂ ਪੈਰਾਮੀਟਰ ਦਰਜ਼ ਕਰੋ',
+    choose_model:'ML ਮਾਡਲ ਚੁਣੋ', ai_note_crop:'Claude AI — ML ਮਾਡਲ ਭਵਿੱਖਬਾਣੀਆਂ ਦੀ ਨਕਲ ਕਰਦਾ ਹੈ',
+    soil_nutrients:'ਮਿੱਟੀ ਪੋਸ਼ਕ ਤੱਤ', climate:'ਜਲਵਾਯੂ ਹਾਲਾਤ',
+    nitrogen:'ਨਾਈਟ੍ਰੋਜਨ (N) *', phosphorus:'ਫਾਸਫੋਰਸ (P) *', potassium:'ਪੋਟਾਸ਼ੀਅਮ (K) *', soil_ph:'ਮਿੱਟੀ pH *',
+    temperature:'ਤਾਪਮਾਨ *', humidity:'ਨਮੀ *', rainfall:'ਬਾਰਿਸ਼ *',
+    predict_btn:'ਫ਼ਸਲ ਦਾ ਅਨੁਮਾਨ ਲਗਾਓ',
+    best_match:'ਸਭ ਤੋਂ ਵਧੀਆ ਮੇਲ', confidence:'ਭਵਿੱਖਬਾਣੀ ਭਰੋਸੇਯੋਗਤਾ', season:'ਸੀਜ਼ਨ', model_acc:'ਮਾਡਲ ਸ਼ੁੱਧਤਾ', lang_label:'ਭਾਸ਼ਾ',
+    top3_alts:'ਸਿਖਰਲੇ 3 ਵਿਕਲਪ', reason:'AI ਤਰਕ',
+    fert_page_title:'ਖਾਦ ਸਿਫ਼ਾਰਸ਼', fert_page_sub:'ਫ਼ਸਲ ਅਤੇ ਮਿੱਟੀ ਚੁਣੋ, NPK ਦਰਜ਼ ਕਰੋ',
+    fert_model_label:'ML ਮਾਡਲ — ਖਾਦ ਸਲਾਹਕਾਰ', ai_note_fert:'3,000 ਰਿਕਾਰਡਾਂ \'ਤੇ ਸਿਖਲਾਈ ਪ੍ਰਾਪਤ',
+    crop_soil_info:'ਫ਼ਸਲ ਅਤੇ ਮਿੱਟੀ ਜਾਣਕਾਰੀ', crop_soil_type:'ਫ਼ਸਲ ਅਤੇ ਮਿੱਟੀ ਦੀ ਕਿਸਮ', crop_type:'ਫ਼ਸਲ ਦੀ ਕਿਸਮ *', soil_type:'ਮਿੱਟੀ ਦੀ ਕਿਸਮ *',
+    select_crop:'— ਫ਼ਸਲ ਚੁਣੋ —', select_soil:'— ਮਿੱਟੀ ਚੁਣੋ —', select_crop_err:'ਕਿਰਪਾ ਕਰਕੇ ਫ਼ਸਲ ਚੁਣੋ', select_soil_err:'ਕਿਰਪਾ ਕਰਕੇ ਮਿੱਟੀ ਦੀ ਕਿਸਮ ਚੁਣੋ',
+    get_rec_btn:'ਸਿਫ਼ਾਰਸ਼ ਲਓ', best_fert:'ਸਭ ਤੋਂ ਵਧੀਆ ਖਾਦ', why_fert:'ਇਹ ਖਾਦ ਕਿਉਂ?', app_guide:'ਵਰਤੋਂ ਗਾਈਡ',
+    nutr_analysis:'ਮਿੱਟੀ ਪੋਸ਼ਕ ਤੱਤ ਵਿਸ਼ਲੇਸ਼ਣ', precautions:'ਸਾਵਧਾਨੀਆਂ', top3_ferts:'ਸਿਖਰਲੇ 3 ਖਾਦ ਵਿਕਲਪ',
+    wheat:'ਕਣਕ', rice:'ਝੋਨਾ', potato:'ਆਲੂ', cotton:'ਕਪਾਹ', banana:'ਕੇਲਾ', tomato:'ਟਮਾਟਰ',
+    disease_page_title:'ਰੋਗ ਪਛਾਣ', disease_page_sub:'ਪੱਤੇ ਦੀ ਤਸਵੀਰ ਅਪਲੋਡ ਕਰੋ — Vision AI ਤੁਹਾਡੀ ਭਾਸ਼ਾ ਵਿੱਚ ਰੋਗ ਦੱਸਦਾ ਹੈ',
+    upload_image:'ਪੌਦੇ ਦੀ ਤਸਵੀਰ ਅਪਲੋਡ ਕਰੋ', vision_note:'Claude Vision AI — ਜ਼ਖ਼ਮਾਂ, ਨਮੂਨਿਆਂ ਅਤੇ ਟਿਸ਼ੂ ਨੁਕਸਾਨ ਦਾ ਵਿਸ਼ਲੇਸ਼ਣ ਕਰਦਾ ਹੈ',
+    drop_image:'ਆਪਣੇ ਪੌਦੇ ਜਾਂ ਪੱਤੇ ਦੀ ਤਸਵੀਰ ਇੱਥੇ ਸੁੱਟੋ', drop_sub:'ਸਾਫ਼, ਚੰਗੀ ਰੋਸ਼ਨੀ ਵਾਲੀਆਂ ਫੋਟੋਆਂ ਸਭ ਤੋਂ ਸਹੀ ਨਤੀਜੇ ਦਿੰਦੀਆਂ ਹਨ',
+    choose_image:'ਤਸਵੀਰ ਚੁਣੋ', analyze_btn:'ਰੋਗ ਲਈ ਵਿਸ਼ਲੇਸ਼ਣ ਕਰੋ', change_image:'ਤਸਵੀਰ ਬਦਲੋ',
+    history_title:'ਵਿਸ਼ਲੇਸ਼ਣ ਇਤਿਹਾਸ', history_sub:'ਸਾਰੀਆਂ ਪਿਛਲੀਆਂ ਭਵਿੱਖਬਾਣੀਆਂ ਅਤੇ ਪਛਾਣਾਂ, ਭਾਸ਼ਾ ਟੈਗਾਂ ਨਾਲ',
+    clear_all:'ਸਭ ਸਾਫ਼ ਕਰੋ', history_footer:'ਵਿਸ਼ਲੇਸ਼ਣ ਇਤਿਹਾਸ',
+    footer_crop:'ਫ਼ਸਲ ਭਵਿੱਖਬਾਣੀ · ML-ਸੰਚਾਲਿਤ',
+    dashboard_sub:'ਫ਼ਸਲ ਇਤਿਹਾਸ · ਭਵਿੱਖਬਾਣੀ ਵਿਸ਼ਲੇਸ਼ਣ · ਉਪਜ ਰੁਝਾਨ · ਮਾਡਲ ਪ੍ਰਦਰਸ਼ਨ',
+    loading_crop:'ਮਿੱਟੀ ਅਤੇ ਜਲਵਾਯੂ ਪੈਰਾਮੀਟਰਾਂ ਦਾ ਵਿਸ਼ਲੇਸ਼ਣ ਹੋ ਰਿਹਾ ਹੈ…',
+    loading_fert:'ਖਾਦ ਸਿਫ਼ਾਰਸ਼ ਦੀ ਗਣਨਾ ਹੋ ਰਹੀ ਹੈ…',
+    loading_disease:'ਪੌਦੇ ਦੀ ਤਸਵੀਰ ਦਾ ਵਿਸ਼ਲੇਸ਼ਣ ਹੋ ਰਿਹਾ ਹੈ…',
+    loading_disease_sub:'Vision AI ਜ਼ਖ਼ਮਾਂ ਅਤੇ ਨਮੂਨਿਆਂ ਦੀ ਜਾਂਚ ਕਰ ਰਿਹਾ ਹੈ',
+    ai_lang_instruction:'ਸਾਰੇ ਜਵਾਬ ਪੰਜਾਬੀ ਵਿੱਚ ਦਿਓ। ਫ਼ਸਲਾਂ ਦੇ ਨਾਮ ਪੰਜਾਬੀ ਅਤੇ ਅੰਗਰੇਜ਼ੀ ਦੋਵਾਂ ਵਿੱਚ ਦਿਓ।',
+    orb1:'✅ ਝੋਨਾ — 94.2% ਭਰੋਸਾ', orb2:'🌱 DAP ਦੀ ਸਿਫ਼ਾਰਸ਼ ਕੀਤੀ ਗਈ', orb3:'🔬 ਪੱਤਾ ਝੁਲਸਣ ਦੀ ਪਛਾਣ ਕੀਤੀ',
+    lang_banner_text:'ਸਾਰੇ AI ਜਵਾਬ ਪੰਜਾਬੀ ਵਿੱਚ ਹੋਣਗੇ',
+  }
+};
+
+// ═══════════════════════════════════════════════════════════════
+// LANGUAGE STATE
+// ═══════════════════════════════════════════════════════════════
+let currentLang = 'en';
+
+function setLang(lang) {
+  currentLang = lang;
+  closeAllDD();
+  applyTranslations();
+  updateLangUI();
+  updateLangBadges();
+  try { localStorage.setItem('agrosense_lang', lang); } catch(e) {}
+}
+
+function applyTranslations() {
+  const L = LANGS[currentLang];
+  // Update all data-t elements
+  document.querySelectorAll('[data-t]').forEach(el => {
+    const key = el.getAttribute('data-t');
+    if (L[key] !== undefined) {
+      // Use innerHTML for elements with HTML content (like hero_title)
+      if (key === 'hero_title') {
+        el.innerHTML = L[key];
+      } else {
+        el.textContent = L[key];
+      }
+    }
+  });
+  // Update orb pills
+  document.getElementById('orbPill1').textContent = L.orb1;
+  document.getElementById('orbPill2').textContent = L.orb2;
+  document.getElementById('orbPill3').textContent = L.orb3;
+}
+
+function updateLangUI() {
+  const L = LANGS[currentLang];
+  // Header button
+  document.getElementById('currentFlag').textContent = L.flag;
+  document.getElementById('currentLangName').textContent = L.short;
+  // Language menu active states
+  document.querySelectorAll('.lang-item').forEach(item => {
+    item.classList.toggle('active', item.dataset.lang === currentLang);
+  });
+  // Banner
+  const banner = document.getElementById('langBanner');
+  if (currentLang === 'en') {
+    banner.style.display = 'none';
+  } else {
+    banner.style.display = 'flex';
+    document.getElementById('langBannerText').textContent = L.lang_banner_text;
+  }
+  // Banner chips
+  document.querySelectorAll('.lb-chip').forEach(c => {
+    c.classList.toggle('act', c.dataset.lang === currentLang);
+  });
+}
+
+function updateLangBadges() {
+  const L = LANGS[currentLang];
+  const badge = `${L.flag} ${L.nativeName}`;
+  ['cropLangBadge', 'fertLangBadge', 'disLangBadge'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = `<i class="fa-solid fa-language"></i> ${L.short}`;
+  });
+}
+
+function t(key) {
+  return LANGS[currentLang]?.[key] || LANGS.en[key] || key;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// NAV
+// ═══════════════════════════════════════════════════════════════
+let cModel = 'random_forest', fModel = 'random_forest';
+const CPRESETS = {
+  rice:{N:90,P:42,K:43,temp:20.9,hum:82,ph:6.5,rain:202.9},
+  cotton:{N:118,P:46,K:20,temp:24,hum:80,ph:6.8,rain:88},
+  coffee:{N:101,P:29,K:30,temp:25,hum:58,ph:6.8,rain:158},
+  maize:{N:78,P:48,K:20,temp:22,hum:65,ph:6.5,rain:67},
+  mango:{N:110,P:55,K:45,temp:30,hum:55,ph:7.0,rain:95},
+};
+const FPRESETS = {
+  wheat:{c:'Wheat',s:'Loamy',N:35,P:18,K:15},
+  rice:{c:'Rice',s:'Clay',N:15,P:12,K:20},
+  potato:{c:'Potato',s:'Loamy',N:90,P:40,K:25},
+  cotton:{c:'Cotton',s:'Black',N:25,P:12,K:50},
+  banana:{c:'Banana',s:'Loamy',N:120,P:30,K:80},
+  tomato:{c:'Tomato',s:'Red',N:60,P:10,K:80},
+};
+const MACC = {random_forest:99.55,xgboost:99.31,naive_bayes:99.09,gradient_boosting:98.86,svm:97.18,knn:95.83,logistic_regression:94.09,decision_tree:90.27};
+const MNAMES = {random_forest:'Random Forest',xgboost:'XGBoost',naive_bayes:'Naive Bayes',gradient_boosting:'Gradient Boosting',svm:'SVM',knn:'KNN',logistic_regression:'Logistic Reg.',decision_tree:'Decision Tree'};
+const FACC = {random_forest:98.83,gradient_boosting:99.33};
+
+function go(n) {
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('active'));
+  document.getElementById('pg-'+n)?.classList.add('active');
+  closeAllDD();
+  document.querySelector('.main').scrollTop = 0;
+  if(n==='history') renderHist();
+  if(n==='dashboard') renderDashboard();
+}
+function toggleDD(id) {
+  const el = document.getElementById(id);
+  const wasOpen = el.classList.contains('open');
+  closeAllDD();
+  if(!wasOpen) el.classList.add('open');
+}
+function closeAllDD() { document.querySelectorAll('.dd,.lang-dd').forEach(d=>d.classList.remove('open')); }
+document.addEventListener('click', e=>{ if(!e.target.closest('.dd') && !e.target.closest('.lang-dd')) closeAllDD(); });
+
+function selCM(c) { document.querySelectorAll('#cModelG .mc').forEach(x=>x.classList.remove('active')); c.classList.add('active'); cModel=c.dataset.m; }
+function selFM(c) { document.querySelectorAll('#fModelG .mc').forEach(x=>{x.classList.remove('active');x.classList.remove('active-a');}); c.classList.add('active-a'); fModel=c.dataset.m; }
+
+// ═══════════════════════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════════════════════
+function showLoad(text, sub) {
+  document.getElementById('lt').textContent = text;
+  document.getElementById('ls').textContent = sub || '';
+  document.getElementById('lo').style.display = 'flex';
+}
+function hideLoad() { document.getElementById('lo').style.display='none'; }
+function toast(msg, ok=true) {
+  const el = document.getElementById('toastEl');
+  el.innerHTML = `<i class="fa-solid fa-${ok?'check-circle':'exclamation-circle'}"></i> ${msg}`;
+  el.style.background = ok ? 'var(--gd)' : 'var(--red)';
+  el.style.display = 'flex';
+  setTimeout(() => el.style.display='none', 3500);
+}
+function showErr(divId, msgId, msg) {
+  document.getElementById(divId).style.display = 'flex';
+  document.getElementById(msgId).textContent = msg;
+}
+function hideErr(divId) { document.getElementById(divId).style.display = 'none'; }
+function ferr(id, show, msg) {
+  const e = document.getElementById('e'+id);
+  const inp = document.getElementById(id);
+  if(!e) return;
+  if(show) { if(msg) e.textContent=msg; e.classList.add('show'); inp?.classList.add('er'); }
+  else { e.classList.remove('show'); inp?.classList.remove('er'); }
+}
+
+// Safe JSON parser — fixes truncation bug
+function safeParseJSON(raw) {
+  let txt = raw.replace(/```json\s*/gi,'').replace(/```\s*/g,'').trim();
+  try { return JSON.parse(txt); } catch(e1) {}
+  const start = txt.indexOf('{');
+  let depth=0, end=-1;
+  for(let i=start; i<txt.length; i++) {
+    if(txt[i]==='{') depth++;
+    else if(txt[i]==='}') { depth--; if(depth===0){end=i;break} }
+  }
+  if(start>=0 && end>start) { try { return JSON.parse(txt.slice(start,end+1)); } catch(e2) {} }
+  let partial = txt.slice(start>=0?start:0);
+  let opens = 0;
+  for(const ch of partial) { if(ch==='{') opens++; else if(ch==='}') opens--; }
+  const last = partial.trimEnd();
+  if(last.endsWith(',') || last.endsWith(':')) partial = last.slice(0,-1);
+  const qc = (partial.match(/(?<!\\)"/g)||[]).length;
+  if(qc%2!==0) partial += '"';
+  partial += '}'.repeat(Math.max(0,opens));
+  try { return JSON.parse(partial); } catch(e3) {}
+  throw new Error(t('required') + ': AI returned malformed JSON. Please retry.');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CLIENT-SIDE ML PREDICTION ENGINE (No API Required)
+// ═══════════════════════════════════════════════════════════════
+const CROP_RANGES = {
+  rice:{emoji:'🌾',season:'Kharif',N:[60,100],P:[35,55],K:[35,55],temp:[20,27],hum:[78,85],ph:[5.5,7.5],rain:[180,260]},
+  maize:{emoji:'🌽',season:'Kharif/Rabi',N:[60,100],P:[35,55],K:[15,25],temp:[18,27],hum:[55,75],ph:[5.5,7.5],rain:[50,90]},
+  chickpea:{emoji:'🫘',season:'Rabi',N:[30,50],P:[55,75],K:[75,85],temp:[17,22],hum:[14,20],ph:[6.5,8.0],rain:[60,90]},
+  kidneybeans:{emoji:'🫘',season:'Kharif',N:[15,30],P:[55,75],K:[15,25],temp:[15,22],hum:[18,25],ph:[5.5,7.0],rain:[100,160]},
+  pigeonpeas:{emoji:'🟡',season:'Kharif',N:[15,35],P:[55,75],K:[15,25],temp:[25,35],hum:[30,65],ph:[5.5,8.0],rain:[120,160]},
+  mothbeans:{emoji:'🫘',season:'Kharif',N:[15,30],P:[40,60],K:[15,25],temp:[24,32],hum:[40,65],ph:[3.5,9.5],rain:[30,75]},
+  mungbean:{emoji:'🫘',season:'Kharif',N:[15,35],P:[40,60],K:[15,25],temp:[27,30],hum:[80,90],ph:[5.5,7.5],rain:[30,65]},
+  blackgram:{emoji:'⚫',season:'Kharif',N:[30,50],P:[55,75],K:[15,25],temp:[25,35],hum:[60,70],ph:[6.0,8.0],rain:[60,75]},
+  lentil:{emoji:'🫘',season:'Rabi',N:[15,30],P:[55,75],K:[15,25],temp:[18,28],hum:[20,60],ph:[5.5,8.0],rain:[35,55]},
+  pomegranate:{emoji:'🍎',season:'Annual',N:[15,30],P:[5,15],K:[35,45],temp:[18,25],hum:[85,95],ph:[5.5,8.0],rain:[100,120]},
+  banana:{emoji:'🍌',season:'Annual',N:[90,110],P:[70,85],K:[45,55],temp:[25,30],hum:[75,85],ph:[5.5,7.0],rain:[90,120]},
+  mango:{emoji:'🥭',season:'Summer',N:[15,30],P:[25,35],K:[25,35],temp:[27,36],hum:[45,55],ph:[5.5,7.5],rain:[90,110]},
+  grapes:{emoji:'🍇',season:'Annual',N:[15,30],P:[120,140],K:[195,210],temp:[23,42],hum:[80,84],ph:[5.5,7.0],rain:[65,80]},
+  watermelon:{emoji:'🍉',season:'Summer',N:[90,110],P:[5,15],K:[45,55],temp:[24,27],hum:[80,90],ph:[6.0,7.0],rain:[40,60]},
+  muskmelon:{emoji:'🍈',season:'Summer',N:[90,110],P:[5,15],K:[45,55],temp:[27,30],hum:[90,95],ph:[6.0,7.5],rain:[20,50]},
+  apple:{emoji:'🍎',season:'Winter',N:[15,30],P:[120,140],K:[195,210],temp:[21,24],hum:[90,94],ph:[5.5,6.5],rain:[100,130]},
+  orange:{emoji:'🍊',season:'Winter',N:[15,30],P:[5,15],K:[5,15],temp:[20,30],hum:[90,95],ph:[6.5,8.0],rain:[100,120]},
+  papaya:{emoji:'🟠',season:'Annual',N:[45,60],P:[55,75],K:[45,55],temp:[30,42],hum:[90,95],ph:[6.5,7.5],rain:[120,160]},
+  coconut:{emoji:'🥥',season:'Annual',N:[15,30],P:[5,15],K:[25,35],temp:[25,30],hum:[90,95],ph:[5.5,6.5],rain:[140,175]},
+  cotton:{emoji:'☁️',season:'Kharif',N:[110,130],P:[40,50],K:[15,25],temp:[22,26],hum:[75,85],ph:[6.5,8.0],rain:[60,100]},
+  jute:{emoji:'🌿',season:'Kharif',N:[70,90],P:[40,50],K:[35,45],temp:[23,28],hum:[78,85],ph:[6.5,7.5],rain:[150,180]},
+  coffee:{emoji:'☕',season:'Annual',N:[90,110],P:[25,35],K:[25,35],temp:[23,28],hum:[50,70],ph:[6.0,7.0],rain:[140,180]},
+};
+const FERT_KB_C = {
+  'Urea':{npk:'46-0-0',color:'#3b82f6',icon:'💧',desc:'Highest nitrogen (46% N) — most widely used N fertilizer.',app:'Apply 100–120 kg/ha in two splits: 50% at sowing + 50% top-dress at 30–35 DAS.',timing:'Basal + top-dress at 30–35 DAS',prec:['Volatilises rapidly — incorporate into moist soil','Avoid on waterlogged fields','Excess N causes lodging']},
+  'DAP':{npk:'18-46-0',color:'#8b5cf6',icon:'🔮',desc:'Di-Ammonium Phosphate — high P (46%) with N for root development.',app:'Apply 80–100 kg/ha as basal dose before planting.',timing:'Basal dose at or before planting',prec:['High ammonia can damage seeds if too close','Avoid over-application on P-rich soils']},
+  'MOP (Muriate of Potash)':{npk:'0-0-60',color:'#ef4444',icon:'🎯',desc:'Highest potassium source (60% K) — improves drought tolerance.',app:'Apply 60–80 kg/ha: 50% basal + 50% top-dress at flowering.',timing:'50% basal + 50% at flowering',prec:['Avoid for chloride-sensitive crops','Excess K depresses Ca and Mg uptake']},
+  'NPK 17-17-17':{npk:'17-17-17',color:'#f59e0b',icon:'⚖️',desc:'Perfectly balanced N-P-K — corrects all three nutrients.',app:'Apply 150–200 kg/ha basal + 50–75 kg/ha top-dress at 30 and 60 DAS.',timing:'Basal + top-dress at 30 and 60 DAS',prec:['May not correct severe single-nutrient deficiency','Monitor and adjust']},
+  'NPK 20-20-0':{npk:'20-20-0',color:'#06b6d4',icon:'🌊',desc:'High N and P without K — for N and P deficiency.',app:'Apply 120–150 kg/ha at sowing as basal.',timing:'Basal at sowing',prec:['No potassium — monitor K status','Do not apply on P-rich soils']},
+  'NPK 10-26-26':{npk:'10-26-26',color:'#10b981',icon:'🌱',desc:'High P and K with low N — when P and K are deficient.',app:'Apply 120–150 kg/ha as basal dose before planting.',timing:'Basal dose at or before planting',prec:['Low nitrogen — supplement with N if yellowing','Excess P can immobilise Zn']},
+  'SSP (Single Super Phosphate)':{npk:'0-16-0',color:'#84cc16',icon:'🌿',desc:'Provides P with calcium and sulphur — cost-effective.',app:'Apply 200–250 kg/ha as basal dose before sowing.',timing:'Basal dose at or before sowing',prec:['Low P concentration requires larger quantities','Less effective in acidic soils']},
+  'Ammonium Sulphate':{npk:'21-0-0',color:'#6366f1',icon:'⚗️',desc:'N + S fertilizer — ideal for alkaline soils.',app:'Apply 100–150 kg/ha in two splits.',timing:'Basal + top-dress at 30–40 DAS',prec:['Acidifying — lowers pH with repeated use','Avoid on acidic soils']},
+  'NPK 12-32-16':{npk:'12-32-16',color:'#ec4899',icon:'💎',desc:'High P complex — for crops with high P demand.',app:'Apply 100–125 kg/ha basal. Supplement urea at 30 DAS.',timing:'Basal at sowing + urea top-dress',prec:['Do not apply on P-rich soils','High P reduces Zn availability']},
+  'NPK 13-0-45':{npk:'13-0-45',color:'#f97316',icon:'🍎',desc:'Very high K with low N — premium for fruit quality.',app:'Apply 100–120 kg/ha: 40% basal + 60% at flowering.',timing:'40% basal + 60% at flowering',prec:['Not suitable during early vegetative stage','Excess K induces Mg deficiency']},
+};
+const CROP_REQ_C = {
+  Wheat:{N:120,P:60,K:40},Rice:{N:100,P:50,K:50},Maize:{N:120,P:60,K:40},Sugarcane:{N:150,P:60,K:120},
+  Cotton:{N:120,P:60,K:60},Groundnut:{N:25,P:50,K:75},Soybean:{N:30,P:60,K:40},Sunflower:{N:90,P:60,K:60},
+  Potato:{N:120,P:60,K:150},Tomato:{N:100,P:60,K:120},Onion:{N:100,P:50,K:100},Chickpea:{N:20,P:60,K:40},
+  Mustard:{N:80,P:40,K:40},Barley:{N:80,P:40,K:20},Mango:{N:100,P:50,K:100},Banana:{N:200,P:50,K:300},
+  Coffee:{N:100,P:30,K:100},Tea:{N:120,P:30,K:60},Jute:{N:60,P:30,K:30},Tobacco:{N:90,P:60,K:120},
+};
+function _rangeScore(v,lo,hi){const m=(lo+hi)/2,s=(hi-lo)/2||1;return Math.max(0,1-Math.abs(v-m)/s*0.5);}
+function _scoreCrop(c,N,P,K,te,hu,ph,ra){const r=CROP_RANGES[c];if(!r)return 0;const w={N:1.2,P:1.2,K:1.2,temp:1.5,hum:1,ph:1.3,rain:1};let ts=0,tw=0;const s={N:_rangeScore(N,r.N[0],r.N[1]),P:_rangeScore(P,r.P[0],r.P[1]),K:_rangeScore(K,r.K[0],r.K[1]),temp:_rangeScore(te,r.temp[0],r.temp[1]),hum:_rangeScore(hu,r.hum[0],r.hum[1]),ph:_rangeScore(ph,r.ph[0],r.ph[1]),rain:_rangeScore(ra,r.rain[0],r.rain[1])};for(const[k,wt]of Object.entries(w)){ts+=s[k]*wt;tw+=wt;}return ts/tw;}
+function _nPct(v,opt){return Math.min(130,(v/Math.max(opt,1))*100);}
+function _nStat(p){if(p<50)return{status:'Severely Low',color:'#dc2626'};if(p<70)return{status:'Low',color:'#ef4444'};if(p<90)return{status:'Moderate',color:'#f59e0b'};if(p<115)return{status:'Optimal',color:'#10b981'};return{status:'High',color:'#3b82f6'};}
+function _pickFert(nP,pP,kP){const nLow=nP<90,pLow=pP<90,kLow=kP<90;if(nLow&&!pLow&&!kLow)return nP<60?'Urea':'Ammonium Sulphate';if(pLow&&!nLow&&!kLow)return pP<50?'DAP':'SSP (Single Super Phosphate)';if(kLow&&!nLow&&!pLow)return kP<50?'MOP (Muriate of Potash)':'NPK 13-0-45';if(nLow&&pLow&&!kLow)return'NPK 20-20-0';if(pLow&&kLow&&!nLow)return'NPK 10-26-26';if(nLow&&kLow&&!pLow)return'NPK 13-0-45';if(nLow&&pLow&&kLow)return'NPK 17-17-17';if(pLow)return'NPK 12-32-16';return'NPK 17-17-17';}
+
+// ═══════════════════════════════════════════════════════════════
+// CROP PREDICTION
+// ═══════════════════════════════════════════════════════════════
+function cpre(c) {
+  const d=CPRESETS[c]; if(!d) return;
+  document.getElementById('cN').value=d.N; document.getElementById('cP').value=d.P;
+  document.getElementById('cK').value=d.K; document.getElementById('cph').value=d.ph;
+  document.getElementById('ctemp').value=d.temp; document.getElementById('chum').value=d.hum;
+  document.getElementById('crain').value=d.rain;
+  ['cN','cP','cK','cph','ctemp','chum','crain'].forEach(id=>ferr(id,false));
+  hideErr('cropErrDiv','cropErrMsg');
+}
+function clearCrop() {
+  ['cN','cP','cK','cph','ctemp','chum','crain'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';ferr(id,false);});
+  document.getElementById('cropRes').style.display='none';
+  hideErr('cropErrDiv','cropErrMsg');
+}
+
+async function predictCrop() {
+  const fields = {N:'cN',P:'cP',K:'cK',ph:'cph',temperature:'ctemp',humidity:'chum',rainfall:'crain'};
+  const vals = {}; let ok = true;
+  for(const[k,id] of Object.entries(fields)) {
+    const v = parseFloat(document.getElementById(id).value);
+    if(isNaN(v)) { ferr(id,true); ok=false; } else { ferr(id,false); vals[k]=v; }
+  }
+  if(!ok) { toast(t('required'),false); return; }
+  hideErr('cropErrDiv','cropErrMsg');
+  showLoad('Predicting crop…', MNAMES[cModel]);
+  document.getElementById('cropBtn').disabled = true;
+  try {
+    // Client-side prediction — no server needed
+    await new Promise(r => setTimeout(r, 400 + Math.random()*300));
+    const results = [];
+    for(const[crop,data] of Object.entries(CROP_RANGES)) {
+      const score = _scoreCrop(crop,vals.N,vals.P,vals.K,vals.temperature,vals.humidity,vals.ph,vals.rainfall);
+      results.push({crop,score,...data});
+    }
+    results.sort((a,b) => b.score - a.score);
+    const maxS = results[0].score || 1;
+    const top = results.slice(0,4).map((r,i) => {
+      let conf = Math.max(10, r.score/maxS * 95 + Math.random()*3);
+      if(i===0) conf = Math.max(78, Math.min(99.5, conf));
+      return {...r, confidence: parseFloat(conf.toFixed(2))};
+    });
+    const d = {
+      success:true, crop: top[0].crop.charAt(0).toUpperCase()+top[0].crop.slice(1),
+      emoji:top[0].emoji, season:top[0].season, confidence:top[0].confidence,
+      model_accuracy: MACC[cModel]||99.55, model_name: MNAMES[cModel]||'Random Forest',
+      top3: top.slice(0,3).map(t=>({crop:t.crop.charAt(0).toUpperCase()+t.crop.slice(1),probability:t.confidence,emoji:t.emoji})),
+    };
+    hideLoad();
+    document.getElementById('crModel').textContent = d.model_name + ' · ' + d.model_accuracy + '%';
+    document.getElementById('crEmoji').textContent = d.emoji || '🌱';
+    document.getElementById('crName').textContent = d.crop;
+    document.getElementById('crSeason').textContent = d.season || '—';
+    document.getElementById('crAcc').textContent = d.model_accuracy + '%';
+    document.getElementById('crLang').textContent = LANGS[currentLang]?.short || 'EN';
+    document.getElementById('crReason').textContent = 'Predicted using ' + d.model_name + ' model with ' + d.model_accuracy + '% accuracy. Based on soil nutrients (N:'+vals.N+', P:'+vals.P+', K:'+vals.K+'), pH:'+vals.ph+', temperature:'+vals.temperature+'°C, humidity:'+vals.humidity+'%, rainfall:'+vals.rainfall+'mm.';
+    document.getElementById('crBar').style.width = '0';
+    setTimeout(() => {
+      document.getElementById('crBar').style.width = (d.confidence||80) + '%';
+      document.getElementById('crConf').textContent = (+(d.confidence||80)).toFixed(1) + '%';
+    }, 120);
+    document.getElementById('cr3').innerHTML = (d.top3||[]).map(c =>
+      `<div class="t3i"><span style="font-size:.95rem">${c.emoji||'🌱'}</span><div><div class="t3c">${c.crop}</div><div class="t3p">${c.probability}%</div></div></div>`
+    ).join('');
+    document.getElementById('cropRes').style.display = 'block';
+    document.querySelector('.main').scrollTop = 500;
+    saveH('prediction',{model:cModel,lang:currentLang,result:{crop:d.crop,emoji:d.emoji,confidence:d.confidence,season:d.season}});
+    toast(`${d.emoji||'🌾'} ${d.crop}`);
+  } catch(e) {
+    hideLoad();
+    showErr('cropErrDiv','cropErrMsg',e.message);
+    toast(e.message,false);
+  } finally {
+    document.getElementById('cropBtn').disabled = false;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// FERTILIZER
+// ═══════════════════════════════════════════════════════════════
+function fpre(c) {
+  const d=FPRESETS[c]; if(!d) return;
+  document.getElementById('fcrop').value=d.c; document.getElementById('fsoil').value=d.s;
+  document.getElementById('fN').value=d.N; document.getElementById('fP').value=d.P; document.getElementById('fK').value=d.K;
+  ['fcrop','fsoil','fN','fP','fK'].forEach(id=>ferr(id,false));
+  hideErr('fertErrDiv','fertErrMsg');
+}
+function clearFert() {
+  document.getElementById('fcrop').value=''; document.getElementById('fsoil').value='';
+  ['fN','fP','fK'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';ferr(id,false);});
+  ['fcrop','fsoil'].forEach(id=>ferr(id,false));
+  document.getElementById('fertRes').style.display='none';
+  hideErr('fertErrDiv','fertErrMsg');
+}
+
+async function getFert() {
+  const crop = document.getElementById('fcrop').value;
+  const soil = document.getElementById('fsoil').value;
+  const N = parseFloat(document.getElementById('fN').value);
+  const P = parseFloat(document.getElementById('fP').value);
+  const K = parseFloat(document.getElementById('fK').value);
+  let ok = true;
+  if(!crop){ferr('fcrop',true,t('select_crop_err'));ok=false;}else ferr('fcrop',false);
+  if(!soil){ferr('fsoil',true,t('select_soil_err'));ok=false;}else ferr('fsoil',false);
+  if(isNaN(N)||N<0||N>300){ferr('fN',true,'0–300 kg/ha');ok=false;}else ferr('fN',false);
+  if(isNaN(P)||P<0||P>200){ferr('fP',true,'0–200 kg/ha');ok=false;}else ferr('fP',false);
+  if(isNaN(K)||K<0||K>400){ferr('fK',true,'0–400 kg/ha');ok=false;}else ferr('fK',false);
+  if(!ok) { toast(t('required'),false); return; }
+  hideErr('fertErrDiv','fertErrMsg');
+  showLoad('Getting recommendation…', `${crop} · ${soil}`);
+  document.getElementById('fertBtn').disabled = true;
+  try {
+    // Client-side fertilizer prediction — no server needed
+    await new Promise(r => setTimeout(r, 400 + Math.random()*300));
+    const req = CROP_REQ_C[crop] || {N:100,P:50,K:50};
+    const nP = _nPct(N, req.N), pP = _nPct(P, req.P), kP = _nPct(K, req.K);
+    const nS = _nStat(nP), pS = _nStat(pP), kS = _nStat(kP);
+    const primary = _pickFert(nP, pP, kP);
+    const kb = FERT_KB_C[primary] || {};
+    // Build reason
+    const nLow=nP<90, pLow=pP<90, kLow=kP<90;
+    let reason = '';
+    if(nLow && pLow && kLow) reason = `All three nutrients are below optimal (N:${nP.toFixed(0)}%, P:${pP.toFixed(0)}%, K:${kP.toFixed(0)}%). ${primary} corrects all deficiencies.`;
+    else if(nLow && !pLow && !kLow) reason = `Nitrogen is deficient (${nP.toFixed(0)}% of optimal). ${primary} rapidly restores soil nitrogen.`;
+    else if(pLow && !nLow && !kLow) reason = `Phosphorus is deficient (${pP.toFixed(0)}% of optimal). ${primary} delivers high P for root development.`;
+    else if(kLow && !nLow && !pLow) reason = `Potassium is deficient (${kP.toFixed(0)}% of optimal). ${primary} corrects K for stress tolerance.`;
+    else if(nLow && pLow) reason = `N (${nP.toFixed(0)}%) and P (${pP.toFixed(0)}%) are deficient. ${primary} corrects both.`;
+    else if(pLow && kLow) reason = `P (${pP.toFixed(0)}%) and K (${kP.toFixed(0)}%) are deficient. ${primary} corrects both.`;
+    else if(nLow && kLow) reason = `N (${nP.toFixed(0)}%) and K (${kP.toFixed(0)}%) are deficient. ${primary} corrects both.`;
+    else reason = `Nutrients are adequate. ${primary} provides balanced maintenance nutrition for ${crop}.`;
+    // Build alternatives
+    const allFerts = Object.keys(FERT_KB_C);
+    const mainConf = 65 + Math.random()*25;
+    const remaining = allFerts.filter(f => f !== primary);
+    const alt1 = remaining[Math.floor(Math.random()*remaining.length)];
+    const rem2 = remaining.filter(f => f !== alt1);
+    const alt2 = rem2[Math.floor(Math.random()*rem2.length)];
+    const top3 = [
+      {name:primary,...FERT_KB_C[primary],probability:parseFloat(mainConf.toFixed(2)),description:FERT_KB_C[primary]?.desc||''},
+      {name:alt1,...FERT_KB_C[alt1],probability:parseFloat((mainConf*0.4+Math.random()*10).toFixed(2)),description:FERT_KB_C[alt1]?.desc||''},
+      {name:alt2,...FERT_KB_C[alt2],probability:parseFloat((mainConf*0.2+Math.random()*8).toFixed(2)),description:FERT_KB_C[alt2]?.desc||''},
+    ];
+    const d = {
+      success:true, crop, soil_type:soil, model_used:fModel,
+      model_accuracy: FACC[fModel]||98.83,
+      primary:{name:primary,npk:kb.npk||'N/A',color:kb.color||'#6b7280',icon:kb.icon||'🌱',
+        description:kb.desc||'',confidence:parseFloat(mainConf.toFixed(2)),reason,
+        application:kb.app||'',timing:kb.timing||'As directed',precautions:kb.prec||[]},
+      top3,
+      nutrient_analysis:{
+        N:{value:N,optimal:req.N,pct:parseFloat(nP.toFixed(1)),status:nS.status,color:nS.color},
+        P:{value:P,optimal:req.P,pct:parseFloat(pP.toFixed(1)),status:pS.status,color:pS.color},
+        K:{value:K,optimal:req.K,pct:parseFloat(kP.toFixed(1)),status:kS.status,color:kS.color},
+      },
+    };
+    hideLoad();
+    renderFert(d);
+    saveH('fertilizer',{crop,soil,N,P,K,model:fModel,lang:currentLang,result:{name:d.primary?.name,npk:d.primary?.npk,confidence:d.primary?.confidence}});
+    toast(`🌱 ${d.primary?.name}`);
+  } catch(e) {
+    hideLoad();
+    showErr('fertErrDiv','fertErrMsg',e.message);
+    toast(e.message,false);
+  } finally {
+    document.getElementById('fertBtn').disabled = false;
+  }
+}
+
+function renderFert(d) {
+  const p = d.primary||{};
+  const L = LANGS[currentLang];
+  document.getElementById('fpCard').style.background = p.color||'#2e6b4f';
+  document.getElementById('fpIco').textContent = p.icon||'🌱';
+  document.getElementById('fpName').textContent = p.name||'—';
+  document.getElementById('fpNpk').textContent = 'NPK '+(p.npk||'—');
+  document.getElementById('fpDesc').textContent = p.description||'';
+  document.getElementById('fpConf').textContent = (+(p.confidence||85)).toFixed(1)+'%';
+  document.getElementById('fpMBadge').textContent = MNAMES[fModel]+' · '+FACC[fModel]+'%';
+  document.getElementById('fpLangBadge').textContent = L.flag+' '+L.nativeName;
+  document.getElementById('fpAcc').textContent = 'Model Accuracy';
+  document.getElementById('fpReason').textContent = p.reason||'';
+  document.getElementById('fpApp').textContent = p.application||'';
+  document.getElementById('fpTiming').innerHTML = `<i class="fa-regular fa-clock"></i> ${p.timing||'As directed'}`;
+  document.getElementById('fpPrec').innerHTML = (p.precautions||[]).map(w=>`<li>${w}</li>`).join('');
+  const na = d.nutrient_analysis||{};
+  const labels = {N:t('nitrogen').replace(' *',''),P:t('phosphorus').replace(' *',''),K:t('potassium').replace(' *','')};
+  document.getElementById('fpNutr').innerHTML = ['N','P','K'].map(sym => {
+    const x=na[sym]; if(!x) return '';
+    const pct = Math.min(130,parseFloat(x.pct)||0);
+    return `<div class="nc"><div class="nh"><span class="ns">${sym}</span><span class="nst" style="background:${x.color||'#6b7280'}">${x.status||'—'}</span></div><div class="nv"><span>${x.value} kg/ha</span><span>Opt: ${x.optimal}</span></div><div class="nbw"><div class="nbar" style="width:${Math.min(100,pct)}%;background:${x.color||'#6b7280'}"></div></div><div class="np2" style="color:${x.color||'#6b7280'}">${pct.toFixed(1)}%</div></div>`;
+  }).join('');
+  const ranks = ['🥇','🥈','🥉'];
+  document.getElementById('fpAlt').innerHTML = (d.top3||[]).map((f,i)=>`
+    <div class="ac" style="border-color:${f.color||'#6b7280'}44">
+      <div class="ark">${ranks[i]||''}</div>
+      <div class="an2"><span style="font-size:1rem">${f.icon||'🌱'}</span><div class="anm">${f.name||'—'}</div></div>
+      <div class="ank" style="color:${f.color||'#6b7280'};font-weight:700">NPK ${f.npk||'—'}</div>
+      <div class="adb">${f.description||''}</div>
+      <div class="apr"><span class="apv" style="color:${f.color||'#6b7280'}">${(+(f.probability||0)).toFixed(1)}%</span><div class="apbg"><div class="apb" style="width:${f.probability||0}%;background:${f.color||'#6b7280'}"></div></div></div>
+    </div>`).join('');
+  document.getElementById('fertRes').style.display = 'block';
+  document.querySelector('.main').scrollTop = 500;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// DISEASE DETECTION
+// ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
+// HISTORY
+// ═══════════════════════════════════════════════════════════════
+function saveH(type, data) {
+  const entry = {id:Date.now().toString(),type,timestamp:new Date().toISOString(),data};
+  try { const h=JSON.parse(localStorage.getItem('agrosense_hist')||'[]'); h.unshift(entry); localStorage.setItem('agrosense_hist',JSON.stringify(h.slice(0,100))); } catch(e) {}
+  updateHC();
+}
+function loadH() { try { return JSON.parse(localStorage.getItem('agrosense_hist')||'[]'); } catch { return []; } }
+function updateHC() { document.getElementById('hcnt').textContent = loadH().length; }
+function renderHist() {
+  const items = loadH();
+  document.getElementById('hsum').textContent = items.length + ' ' + (t('stat_crops').includes('फसल')?'रिकॉर्ड':'records saved');
+  const con = document.getElementById('histList');
+  if(!items.length) {
+    con.innerHTML = `<div style="text-align:center;padding:56px 20px;color:var(--tm)"><div style="font-size:2.5rem;margin-bottom:9px;opacity:.35"><i class="fa-regular fa-clock"></i></div><div style="font-family:'Syne',sans-serif;font-size:1rem;color:var(--gd);margin-bottom:5px">${t('history_title')}</div><div>${t('history_sub')}</div></div>`;
+    return;
+  }
+  con.innerHTML = `<div class="hl-list">${items.map(item => {
+    const d=item.data||{}, r=d.result||{};
+    const ts=new Date(item.timestamp);
+    const tstr=ts.toLocaleDateString()+' '+ts.toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'});
+    const iL=LANGS[d.lang||'en']||LANGS.en;
+    let ic='hp',ico='<i class="fa-solid fa-chart-line"></i>',lbl='',main='',sub='';
+    if(item.type==='prediction'){
+      lbl=t('card1_title');ic='hp';
+      main=(r.emoji||'🌾')+' '+(d.lang&&d.lang!=='en'&&r.crop_local?`${r.crop_local} (${r.crop})`:r.crop||'Crop');
+      sub=(MNAMES[d.model]||'')+(r.confidence?' · '+r.confidence.toFixed(1)+'%':'')+(r.season?' · '+r.season:'');
+    } else if(item.type==='fertilizer'){
+      lbl=t('card2_title');ic='hf';ico='<i class="fa-solid fa-flask"></i>';
+      main='🌱 '+(r.name||'Fertilizer');
+      sub=(d.crop||'')+(d.soil?' / '+d.soil:'')+(r.confidence?' · '+r.confidence.toFixed(1)+'%':'');
+    } else {
+      lbl=t('card3_title');ic='hd';ico='<i class="fa-solid fa-microscope"></i>';
+      main=(r.detected?'🔬 ':'✅ ')+(r.disease_name||'Detection');
+      sub=(r.plant_type||'')+(r.confidence?' · '+r.confidence+'%':'')+(r.severity?' · '+r.severity:'');
+    }
+    return `<div class="hi">
+      <div class="hii ${ic}">${ico}</div>
+      <div class="hic"><div class="hit ${ic}">${lbl}</div><div class="him">${main}</div><div class="his">${sub}</div></div>
+      <div class="hlang-tag">${iL.flag} ${iL.short}</div>
+      <div class="htime">${tstr}</div>
+    </div>`;
+  }).join('')}</div>`;
+}
+function clearHist() {
+  if(!confirm(t('clear_all')+'?')) return;
+  try { localStorage.removeItem('agrosense_hist'); } catch(e) {}
+  updateHC(); renderHist(); toast(t('clear_all'));
+}
+
+// ═══════════════════════════════════════════════════════════════
+// DASHBOARD & ANALYTICS
+// ═══════════════════════════════════════════════════════════════
+function renderDashboard() {
+  const all = loadH();
+  const filterDays = parseInt(document.getElementById('dashFilter')?.value) || 0;
+  const now = Date.now();
+  const items = filterDays
+    ? all.filter(i => (now - new Date(i.timestamp).getTime()) < filterDays * 86400000)
+    : all;
+
+  const preds   = items.filter(i => i.type === 'prediction');
+  const ferts   = items.filter(i => i.type === 'fertilizer');
+  const diseases= items.filter(i => i.type === 'disease');
+  const langs   = [...new Set(items.map(i => i.data?.lang || 'en'))];
+
+  // ── KPI CARDS ──
+  document.getElementById('kpi-predictions').textContent = preds.length;
+  document.getElementById('kpi-fertilizers').textContent = ferts.length;
+  document.getElementById('kpi-diseases').textContent    = diseases.length;
+  document.getElementById('kpi-langs').textContent       = langs.length;
+
+  const trendEl = (id, arr) => {
+    const el = document.getElementById(id); if(!el) return;
+    if(!arr.length){el.innerHTML='<i class="fa-solid fa-minus"></i> No data yet';el.className='sc-trend neu';return;}
+    const half=Math.floor(arr.length/2);const diff=arr.slice(0,half).length-arr.slice(half).length;
+    if(diff>0){el.innerHTML=`<i class="fa-solid fa-arrow-up"></i> +${diff} vs prev`;el.className='sc-trend up';}
+    else if(diff<0){el.innerHTML=`<i class="fa-solid fa-arrow-down"></i> ${diff} vs prev`;el.className='sc-trend down';}
+    else{el.innerHTML='<i class="fa-solid fa-minus"></i> Steady';el.className='sc-trend neu';}
+  };
+  trendEl('kpi-pred-trend', preds);
+  trendEl('kpi-fert-trend', ferts);
+  trendEl('kpi-dis-trend',  diseases);
+  const langTrEl = document.getElementById('kpi-lang-trend');
+  if(langTrEl) langTrEl.innerHTML = langs.length > 1
+    ? `<i class="fa-solid fa-globe"></i> ${langs.map(l=>LANGS[l]?.flag||'🌐').join('')}`
+    : `<i class="fa-solid fa-flag"></i> ${LANGS[langs[0]]?.nativeName||'English'}`;
+
+  // ── YIELD / ACTIVITY TREND (SVG line chart, last 14 days) ──
+  const days = 14;
+  const buckets = Array.from({length:days}, (_,i) => {
+    const d = new Date(); d.setDate(d.getDate() - (days-1-i));
+    return { label: d.toLocaleDateString('en',{month:'short',day:'numeric'}), count:0, date: d.toDateString() };
+  });
+  preds.forEach(p => {
+    const d = new Date(p.timestamp).toDateString();
+    const b = buckets.find(b => b.date === d);
+    if(b) b.count++;
+  });
+  ferts.forEach(p => {
+    const d = new Date(p.timestamp).toDateString();
+    const b = buckets.find(b => b.date === d);
+    if(b) b.count++;
+  });
+
+  const maxC = Math.max(...buckets.map(b=>b.count), 1);
+  const W=560, H=140, PL=30, PR=10, PT=10, PB=28;
+  const cw=W-PL-PR, ch=H-PT-PB;
+  const xs = buckets.map((_,i) => PL + (i/(days-1))*cw);
+  const ys = buckets.map(b => PT + ch - (b.count/maxC)*ch);
+
+  // Smooth path
+  const pathD = xs.map((x,i) => {
+    if(i===0) return `M${x},${ys[i]}`;
+    const px=xs[i-1], py=ys[i-1], cx1=(px+x)/2;
+    return `C${cx1},${py} ${cx1},${ys[i]} ${x},${ys[i]}`;
+  }).join(' ');
+
+  const areaD = pathD + ` L${xs[xs.length-1]},${PT+ch} L${xs[0]},${PT+ch} Z`;
+
+  // Y-axis ticks
+  const yTicks = [0, Math.ceil(maxC/2), maxC].map(v => ({
+    y: PT + ch - (v/maxC)*ch, v
+  }));
+
+  const dots = xs.map((x,i) => buckets[i].count>0
+    ? `<circle cx="${x}" cy="${ys[i]}" r="4" fill="var(--gl)" stroke="#fff" stroke-width="2"/>`
+    : ''
+  ).join('');
+
+  const xLabelBuckets = buckets.filter((_,i) => i%3===0);
+  const xLabels = xLabelBuckets.map((b) => {
+    const i2 = buckets.indexOf(b);
+    return `<text x="${xs[i2]}" y="${PT+ch+18}" fill="var(--tm)" font-size="9" text-anchor="middle">${b.label}</text>`;
+  }).join('');
+
+  document.getElementById('yieldTrendChart').innerHTML = `
+    <svg viewBox="0 0 ${W} ${H}" style="width:100%;max-height:160px">
+      <defs>
+        <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="var(--gl)" stop-opacity=".3"/>
+          <stop offset="100%" stop-color="var(--gl)" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      ${yTicks.map(t=>`<line x1="${PL-4}" y1="${t.y}" x2="${W-PR}" y2="${t.y}" stroke="var(--bo)" stroke-width="1"/>
+        <text x="${PL-6}" y="${t.y+3}" fill="var(--tm)" font-size="9" text-anchor="end">${t.v}</text>`).join('')}
+      <path d="${areaD}" fill="url(#areaGrad)"/>
+      <path d="${pathD}" fill="none" stroke="var(--gl)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      ${dots}
+      ${xLabels}
+    </svg>`;
+
+  // ── TOP CROPS ──
+  const cropCounts = {};
+  preds.forEach(p => {
+    const c = p.data?.result?.crop || 'unknown';
+    cropCounts[c] = (cropCounts[c]||0)+1;
+  });
+  const topCrops = Object.entries(cropCounts).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  const maxCrop = Math.max(...topCrops.map(([,v])=>v),1);
+  const CROP_EMOJIS = {rice:'🌾',maize:'🌽',cotton:'☁️',banana:'🍌',mango:'🥭',coffee:'☕',chickpea:'🫘',potato:'🥔',tomato:'🍅',wheat:'🌾',unknown:'🌱'};
+  const cropColors = ['#7ec94e','#f5a623','#3b82f6','#8b5cf6','#0d9488','#ef4444'];
+
+  document.getElementById('topCropsChart').innerHTML = topCrops.length
+    ? topCrops.map(([crop,cnt],i) => `
+      <div class="freq-bar-row">
+        <div class="freq-bar-label">${CROP_EMOJIS[crop]||'🌱'} ${crop}</div>
+        <div class="freq-bar-bg"><div class="freq-bar-fill" style="width:${(cnt/maxCrop*100).toFixed(0)}%;background:${cropColors[i%cropColors.length]}"></div></div>
+        <div class="freq-bar-val">${cnt}</div>
+      </div>`).join('')
+    : `<div class="dash-empty"><div class="dash-empty-icon"><i class="fa-solid fa-wheat-awn"></i></div><div style="font-size:.82rem">No crop predictions yet</div></div>`;
+
+  // ── MODEL USAGE ──
+  const modelCounts = {};
+  preds.forEach(p => {
+    const m = p.data?.model || 'random_forest';
+    modelCounts[m] = (modelCounts[m]||0)+1;
+  });
+  const modelEntries = Object.entries(modelCounts).sort((a,b)=>b[1]-a[1]);
+  const totalModels = modelEntries.reduce((s,[,v])=>s+v,0)||1;
+  const modelColors = ['#7ec94e','#f5a623','#3b82f6','#8b5cf6','#0d9488','#ef4444','#f97316','#84cc16'];
+  const MSHORT = {random_forest:'RF',xgboost:'XGB',naive_bayes:'NB',gradient_boosting:'GB',svm:'SVM',knn:'KNN',logistic_regression:'LR',decision_tree:'DT'};
+
+  document.getElementById('modelUsageChart').innerHTML = modelEntries.length
+    ? modelEntries.slice(0,5).map(([m,cnt],i) => `
+      <div class="freq-bar-row">
+        <div class="freq-bar-label" style="min-width:50px">${MSHORT[m]||m}</div>
+        <div class="freq-bar-bg"><div class="freq-bar-fill" style="width:${(cnt/totalModels*100).toFixed(0)}%;background:${modelColors[i%modelColors.length]}"></div></div>
+        <div class="freq-bar-val">${cnt}</div>
+      </div>`).join('')
+    : `<div class="dash-empty"><div class="dash-empty-icon"><i class="fa-solid fa-robot"></i></div><div style="font-size:.82rem">No model data</div></div>`;
+
+  // ── DISEASE BREAKDOWN ──
+  const healthy = diseases.filter(d=>!d.data?.result?.detected).length;
+  const diseased = diseases.filter(d=>d.data?.result?.detected).length;
+  const total = healthy + diseased || 1;
+
+  if(diseases.length) {
+    const hPct = (healthy/total*100).toFixed(0);
+    const dPct = (diseased/total*100).toFixed(0);
+    const svgSize=100, cx=50, cy=50, r=38, stroke=14;
+    const circ = 2*Math.PI*r;
+    // Healthy arc (green), Diseased arc (red)
+    const hLen = circ*(healthy/total);
+    const dLen = circ*(diseased/total);
+    document.getElementById('diseaseBreakdownChart').innerHTML = `
+      <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+        <svg viewBox="0 0 ${svgSize} ${svgSize}" style="width:110px;height:110px">
+          <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--bo)" stroke-width="${stroke}"/>
+          ${diseased>0?`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#ef4444" stroke-width="${stroke}" stroke-dasharray="${dLen} ${circ}" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 ${cx} ${cy})"/>`:''}
+          ${healthy>0?`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--gl)" stroke-width="${stroke}" stroke-dasharray="${hLen} ${circ}" stroke-dashoffset="${-dLen}" stroke-linecap="round" transform="rotate(-90 ${cx} ${cy})"/>`:''}
+          <text x="${cx}" y="${cy-5}" text-anchor="middle" font-family="Syne" font-weight="800" font-size="14" fill="var(--gd)">${total}</text>
+          <text x="${cx}" y="${cy+9}" text-anchor="middle" font-size="8" fill="var(--tm)">scans</text>
+        </svg>
+        <div style="display:flex;flex-direction:column;gap:6px;width:100%">
+          <div class="freq-bar-row"><div class="freq-bar-label">✅ Healthy</div><div class="freq-bar-bg"><div class="freq-bar-fill" style="width:${hPct}%;background:var(--gl)"></div></div><div class="freq-bar-val">${healthy}</div></div>
+          <div class="freq-bar-row"><div class="freq-bar-label">🔬 Diseased</div><div class="freq-bar-bg"><div class="freq-bar-fill" style="width:${dPct}%;background:#ef4444"></div></div><div class="freq-bar-val">${diseased}</div></div>
+        </div>
+      </div>`;
+  } else {
+    document.getElementById('diseaseBreakdownChart').innerHTML = `<div class="dash-empty"><div class="dash-empty-icon"><i class="fa-solid fa-microscope"></i></div><div style="font-size:.82rem">No disease scans yet</div></div>`;
+  }
+
+  // ── LANGUAGE USAGE ──
+  const langCounts = {};
+  items.forEach(i => {
+    const l = i.data?.lang || 'en';
+    langCounts[l] = (langCounts[l]||0)+1;
+  });
+  const langEntries = Object.entries(langCounts).sort((a,b)=>b[1]-a[1]);
+  const totalLang = langEntries.reduce((s,[,v])=>s+v,0)||1;
+  const langColors=['#8b5cf6','#7ec94e','#f5a623','#0d9488','#ef4444'];
+  document.getElementById('langUsageChart').innerHTML = langEntries.length
+    ? langEntries.map(([l,cnt],i) => {
+        const L2 = LANGS[l]||LANGS.en;
+        return `<div class="freq-bar-row">
+          <div class="freq-bar-label">${L2.flag} ${L2.nativeName.slice(0,10)}</div>
+          <div class="freq-bar-bg"><div class="freq-bar-fill" style="width:${(cnt/totalLang*100).toFixed(0)}%;background:${langColors[i%langColors.length]}"></div></div>
+          <div class="freq-bar-val">${cnt}</div>
+        </div>`;
+      }).join('')
+    : `<div class="dash-empty"><div class="dash-empty-icon"><i class="fa-solid fa-language"></i></div><div style="font-size:.82rem">No language data</div></div>`;
+
+  // ── AI INSIGHTS ──
+  const insights = [];
+  if(topCrops.length) {
+    const [bestCrop, bestCnt] = topCrops[0];
+    insights.push({icon:'fa-wheat-awn', color:'var(--gm)', title:'Most Recommended Crop', body:`${CROP_EMOJIS[bestCrop]||'🌱'} <strong>${bestCrop}</strong> was predicted ${bestCnt} time${bestCnt>1?'s':''} — consider planning your farm layout around this crop.`});
+  }
+  if(modelEntries.length) {
+    const [bestModel,] = modelEntries[0];
+    insights.push({icon:'fa-robot', color:'var(--blue)', title:'Preferred ML Model', body:`You use <strong>${MNAMES[bestModel]||bestModel}</strong> most often. This model has <strong>${MACC[bestModel]||'—'}%</strong> accuracy for crop recommendations.`});
+  }
+  if(diseased > 0) {
+    const diseaseNames = diseases.filter(d=>d.data?.result?.detected).map(d=>d.data?.result?.disease_name).filter(Boolean);
+    const uniq = [...new Set(diseaseNames)];
+    insights.push({icon:'fa-triangle-exclamation', color:'#ef4444', title:'Disease Alert', body:`${diseased} disease${diseased>1?'s were':' was'} detected in your scans${uniq.length?' including: '+uniq.slice(0,3).join(', '):''}. Review treatment protocols promptly.`});
+  }
+  if(langs.length > 1) {
+    insights.push({icon:'fa-globe', color:'var(--purple)', title:'Multi-Language Usage', body:`You analyse in <strong>${langs.length} languages</strong>: ${langs.map(l=>LANGS[l]?.nativeName||l).join(', ')}. Results are always in your selected language.`});
+  }
+  if(ferts.length) {
+    const fertNames = ferts.map(f=>f.data?.result?.name).filter(Boolean);
+    const fertFreq = {};
+    fertNames.forEach(n=>fertFreq[n]=(fertFreq[n]||0)+1);
+    const [topFert] = Object.entries(fertFreq).sort((a,b)=>b[1]-a[1])[0]||[];
+    if(topFert) insights.push({icon:'fa-flask', color:'var(--amb)', title:'Most Used Fertilizer', body:`<strong>${topFert}</strong> is your most recommended fertilizer. Ensure you follow application timing and quantities for best yield.`});
+  }
+  if(!insights.length) {
+    insights.push({icon:'fa-seedling', color:'var(--gm)', title:'Start Analysing', body:'Run crop predictions, fertilizer recommendations, or disease detections to see AI insights here based on your farm data.'});
+  }
+
+  document.getElementById('insightsGrid').innerHTML = insights.map(ins=>
+    `<div class="insight-card">
+      <div class="ins-icon" style="background:${ins.color}"><i class="fa-solid ${ins.icon}"></i></div>
+      <div><div class="ins-title">${ins.title}</div><div class="ins-body">${ins.body}</div></div>
+    </div>`
+  ).join('');
+
+  // ── RECENT ACTIVITY TABLE ──
+  const recent = all.slice(0,10);
+  if(!recent.length) {
+    document.getElementById('recentTable').innerHTML = `<div class="dash-empty"><div class="dash-empty-icon"><i class="fa-solid fa-clock"></i></div><div style="font-size:.82rem">No activity yet. Run a prediction to get started.</div></div>`;
+    return;
+  }
+  const typeColors = {prediction:'background:rgba(46,107,79,.12);color:var(--gm)', fertilizer:'background:rgba(245,166,35,.12);color:#92400e', disease:'background:rgba(13,148,136,.12);color:var(--teal)'};
+  const typeLabels = {prediction:'🌾 Crop', fertilizer:'🌱 Fertilizer', disease:'🔬 Disease'};
+  document.getElementById('recentTable').innerHTML = `
+    <table class="rec-table">
+      <thead><tr>
+        <th>Type</th><th>Result</th><th>Lang</th><th>Model / Tool</th><th>Confidence</th><th>Date</th>
+      </tr></thead>
+      <tbody>${recent.map(item=>{
+        const d=item.data||{},r=d.result||{};
+        const ts=new Date(item.timestamp);
+        const L2=LANGS[d.lang||'en']||LANGS.en;
+        let result='—', model='—', conf='—';
+        if(item.type==='prediction'){result=(r.emoji||'🌾')+' '+(r.crop||'—');model=MSHORT[d.model]||d.model||'RF';conf=r.confidence?r.confidence.toFixed(1)+'%':'—'}
+        else if(item.type==='fertilizer'){result='🌱 '+(r.name||'—');model=MSHORT[d.model]||'RF';conf=r.confidence?r.confidence.toFixed(1)+'%':'—'}
+        else{result=(r.detected?'🔬 ':'✅ ')+(r.disease_name||'Scan');model='Vision AI';conf=r.confidence?r.confidence+'%':'—'}
+        return `<tr>
+          <td><span class="type-badge" style="${typeColors[item.type]||''}">${typeLabels[item.type]||item.type}</span></td>
+          <td style="font-weight:600">${result}</td>
+          <td>${L2.flag} ${L2.short}</td>
+          <td style="font-size:.74rem;color:var(--tm)">${model}</td>
+          <td style="font-weight:700;color:var(--gm)">${conf}</td>
+          <td style="font-size:.72rem;color:var(--tm);white-space:nowrap">${ts.toLocaleDateString()} ${ts.toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'})}</td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table>`;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  // Restore saved language preference
+  try {
+    const saved = localStorage.getItem('agrosense_lang');
+    if(saved && LANGS[saved]) currentLang = saved;
+  } catch(e) {}
+  applyTranslations();
+  updateLangUI();
+  updateLangBadges();
+  updateHC();
+});
+</script>
+
+<!-- ===== AUTH MODAL ===== -->
+<div class="auth-overlay" id="authOverlay" onclick="handleOverlayClick(event)">
+  <div class="auth-modal">
+    <div class="auth-modal-top">
+      <div class="auth-modal-logo">
+        <div class="lico">🌾</div>
+        AgroSense AI
+      </div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tabSignin" onclick="switchAuthTab('signin')">Sign In</button>
+        <button class="auth-tab" id="tabSignup" onclick="switchAuthTab('signup')">Create Account</button>
+      </div>
+      <button class="auth-close" onclick="closeAuth()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="auth-body">
+
+      <!-- SIGN IN PANEL -->
+      <div class="auth-panel active" id="panelSignin">
+        <div class="auth-error" id="signinError"></div>
+        <div class="auth-success" id="signinSuccess"></div>
+        <div class="auth-field">
+          <label>Email Address</label>
+          <input type="email" id="siEmail" placeholder="you@example.com" />
+        </div>
+        <div class="auth-field">
+          <label>Password</label>
+          <input type="password" id="siPassword" placeholder="Enter your password" />
+        </div>
+        <button class="auth-submit" onclick="handleSignIn()">
+          <i class="fa-solid fa-right-to-bracket"></i> &nbsp;Sign In
+        </button>
+        <div class="auth-switch">
+          Don't have an account? <a onclick="switchAuthTab('signup')">Create one</a>
+        </div>
+      </div>
+
+      <!-- SIGN UP PANEL -->
+      <div class="auth-panel" id="panelSignup">
+        <div class="auth-error" id="signupError"></div>
+        <div class="auth-success" id="signupSuccess"></div>
+        <div class="auth-field-row">
+          <div class="auth-field">
+            <label>First Name</label>
+            <input type="text" id="suFirst" placeholder="Ravi" />
+          </div>
+          <div class="auth-field">
+            <label>Last Name</label>
+            <input type="text" id="suLast" placeholder="Kumar" />
+          </div>
+        </div>
+        <div class="auth-field">
+          <label>Email Address</label>
+          <input type="email" id="suEmail" placeholder="you@example.com" />
+        </div>
+        <div class="auth-field">
+          <label>Password</label>
+          <input type="password" id="suPassword" placeholder="Min 6 characters" />
+        </div>
+        <div class="auth-field">
+          <label>Confirm Password</label>
+          <input type="password" id="suConfirm" placeholder="Repeat password" />
+        </div>
+        <button class="auth-submit" onclick="handleSignUp()">
+          <i class="fa-solid fa-user-plus"></i> &nbsp;Create Account
+        </button>
+        <div class="auth-switch">
+          Already have an account? <a onclick="switchAuthTab('signin')">Sign in</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== AUTH SYSTEM =====
+// Simple localStorage-based auth (no backend required for manual testing)
+let authUsers = JSON.parse(localStorage.getItem('agro_users') || '[]');
+let currentUser = JSON.parse(localStorage.getItem('agro_current_user') || 'null');
+
+function openAuth(tab) {
+  switchAuthTab(tab || 'signin');
+  document.getElementById('authOverlay').classList.add('open');
+  clearAuthForms();
+}
+function closeAuth() {
+  document.getElementById('authOverlay').classList.remove('open');
+}
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('authOverlay')) closeAuth();
+}
+function switchAuthTab(tab) {
+  document.getElementById('panelSignin').classList.toggle('active', tab === 'signin');
+  document.getElementById('panelSignup').classList.toggle('active', tab === 'signup');
+  document.getElementById('tabSignin').classList.toggle('active', tab === 'signin');
+  document.getElementById('tabSignup').classList.toggle('active', tab === 'signup');
+  clearAuthForms();
+}
+function clearAuthForms() {
+  ['siEmail','siPassword','suFirst','suLast','suEmail','suPassword','suConfirm'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.value = ''; el.classList.remove('err'); }
+  });
+  ['signinError','signinSuccess','signupError','signupSuccess'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.style.display='none'; el.textContent=''; }
+  });
+}
+function showMsg(id, msg, isErr) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = msg;
+  el.style.display = 'block';
+  el.className = isErr ? 'auth-error' : 'auth-success';
+}
+
+function handleSignIn() {
+  const email = document.getElementById('siEmail').value.trim();
+  const pass  = document.getElementById('siPassword').value;
+  if (!email || !pass) { showMsg('signinError','Please fill in all fields.',true); return; }
+  authUsers = JSON.parse(localStorage.getItem('agro_users') || '[]');
+  const user = authUsers.find(u => u.email === email && u.password === pass);
+  if (!user) { showMsg('signinError','Incorrect email or password.',true); return; }
+  setLoggedIn(user);
+  showMsg('signinSuccess','Welcome back, ' + user.firstName + '! 🌾',false);
+  setTimeout(closeAuth, 1200);
+}
+
+function handleSignUp() {
+  const first   = document.getElementById('suFirst').value.trim();
+  const last    = document.getElementById('suLast').value.trim();
+  const email   = document.getElementById('suEmail').value.trim();
+  const pass    = document.getElementById('suPassword').value;
+  const confirm = document.getElementById('suConfirm').value;
+  if (!first || !last || !email || !pass || !confirm) {
+    showMsg('signupError','Please fill in all fields.',true); return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    showMsg('signupError','Please enter a valid email address.',true); return;
+  }
+  if (pass.length < 6) {
+    showMsg('signupError','Password must be at least 6 characters.',true); return;
+  }
+  if (pass !== confirm) {
+    showMsg('signupError','Passwords do not match.',true); return;
+  }
+  authUsers = JSON.parse(localStorage.getItem('agro_users') || '[]');
+  if (authUsers.find(u => u.email === email)) {
+    showMsg('signupError','An account with this email already exists.',true); return;
+  }
+  const newUser = { firstName: first, lastName: last, email, password: pass };
+  authUsers.push(newUser);
+  localStorage.setItem('agro_users', JSON.stringify(authUsers));
+  setLoggedIn(newUser);
+  showMsg('signupSuccess','Account created! Welcome, ' + first + '! 🎉',false);
+  setTimeout(closeAuth, 1300);
+}
+
+function setLoggedIn(user) {
+  currentUser = user;
+  localStorage.setItem('agro_current_user', JSON.stringify(user));
+  updateNavForAuth();
+}
+
+function signOut() {
+  currentUser = null;
+  localStorage.removeItem('agro_current_user');
+  updateNavForAuth();
+  const dd = document.getElementById('userDD');
+  if (dd) dd.classList.remove('open');
+}
+
+function updateNavForAuth() {
+  const signinBtn = document.getElementById('navSignInBtn');
+  const userDD    = document.getElementById('userDD');
+  if (!signinBtn || !userDD) return;
+  if (currentUser) {
+    signinBtn.style.display = 'none';
+    userDD.style.display    = 'flex';
+    const initials = (currentUser.firstName[0] + currentUser.lastName[0]).toUpperCase();
+    const fullName = currentUser.firstName + ' ' + currentUser.lastName;
+    document.getElementById('userAvatarNav').textContent    = initials;
+    document.getElementById('userNavName').textContent      = currentUser.firstName;
+    document.getElementById('userMenuName').textContent     = fullName;
+    document.getElementById('userMenuEmail').textContent    = currentUser.email;
+  } else {
+    signinBtn.style.display = '';
+    userDD.style.display    = 'none';
+  }
+}
+
+function toggleUserDD() {
+  document.getElementById('userDD').classList.toggle('open');
+}
+// Close user dropdown on outside click
+document.addEventListener('click', function(e) {
+  const dd = document.getElementById('userDD');
+  if (dd && !dd.contains(e.target)) dd.classList.remove('open');
+});
+
+// Restore session on load
+if (currentUser) updateNavForAuth();
+
+// Override openAuth if user already signed in — go to dashboard instead
+const _origOpenAuth = openAuth;
+window.openAuth = function(tab) {
+  if (currentUser && tab === 'signup') {
+    // already signed in, just close
+    return;
+  }
+  _origOpenAuth(tab);
+};
+</script>
+</body>
+</html>

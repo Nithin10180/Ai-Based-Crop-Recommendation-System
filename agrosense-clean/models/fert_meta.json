@@ -1,0 +1,54 @@
+{
+  "crops": [
+    "Banana",
+    "Barley",
+    "Chickpea",
+    "Coffee",
+    "Cotton",
+    "Groundnut",
+    "Jute",
+    "Maize",
+    "Mango",
+    "Mustard",
+    "Onion",
+    "Potato",
+    "Rice",
+    "Soybean",
+    "Sugarcane",
+    "Sunflower",
+    "Tea",
+    "Tobacco",
+    "Tomato",
+    "Wheat"
+  ],
+  "soil_types": [
+    "Black",
+    "Clay",
+    "Loamy",
+    "Red",
+    "Sandy",
+    "Silt"
+  ],
+  "fertilizers": [
+    "Ammonium Sulphate",
+    "DAP",
+    "MOP (Muriate of Potash)",
+    "NPK 10-26-26",
+    "NPK 12-32-16",
+    "NPK 13-0-45",
+    "NPK 17-17-17",
+    "NPK 20-20-0",
+    "SSP (Single Super Phosphate)",
+    "Urea"
+  ],
+  "rf_accuracy": 73.0,
+  "gb_accuracy": 77.5,
+  "cv_accuracy": 39.53,
+  "features": [
+    "Crop_enc",
+    "Soil_enc",
+    "Nitrogen",
+    "Phosphorus",
+    "Potassium"
+  ]
+}
