@@ -6,7 +6,7 @@ AgroSense is an AI-powered crop recommendation system that helps farmers and use
 
 ## 🚀 Live Demo
 
-https://crop-recommendation-system-new.onrender.com/
+https://ai-based-crop-recommendation-system-cb4z.onrender.com
 
 ## 🚀 Features
 
